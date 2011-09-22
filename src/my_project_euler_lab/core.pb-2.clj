@@ -1,49 +1,9 @@
-(ns my-project-euler-lab.core
+(ns my-project-euler-lab.core.pb-2
   (:use [clojure.test               :only [run-tests]])
   (:use [midje.sweet])
   (:use [clojure.contrib.repl-utils :only [show]])
   (:use [clojure.pprint             :only [pprint]])
   (:use [clojure.walk               :only [macroexpand-all]]))
-
-                                        ; Prime numbers
-
-(defn prime-numbers "Return the list of the n first prime numbers"
-  [n]
-  (loop [candidate 2 current n primes []]
-    (if (zero? current)
-      primes
-      (if (every? #(not= 0 (rem candidate %)) primes)
-        (recur (inc candidate) (dec current) (conj primes candidate))
-        (recur (inc candidate) current primes)
-        )))
-  
-  )
-                                        ; list of the n primes number
-
-(fact
-  (prime-numbers 0) => '()
-  (prime-numbers 1) => '(2)
-  (prime-numbers 2) => '(2 3)
-  (prime-numbers 3) => '(2 3 5)
-  (prime-numbers 4) => '(2 3 5 7)
-  (prime-numbers 100) => '(2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83 89 97 101 103 107 109 113 127 131 137 139 149 151 157 163 167 173 179 181 191 193 197 199 211 223 227 229 233 239 241 251 257 263 269 271 277 281 283 293 307 311 313 317 331 337 347 349 353 359 367 373 379 383 389 397 401 409 419 421 431 433 439 443 449 457 461 463 467 479 487 491 499 503 509 521 523 541))
-
-
-                                        ; Problem 1
-
-; If we list all the natural numbers below 10 that are multiples of 3
-; or 5, we get 3, 5, 6 and 9. 
-; The sum of these multiples is 23.
-; Find the sum of all the multiples of 3 or 5 below 1000.
-
-(defn nn-mult-3-5 "Return the list of the natural numbers multiple of 3 or 5 below n"
-  [n]
-  (filter #(or (zero? (rem % 3)) (zero? (rem % 5))) (range 1 n)) 
-  )
-
-(fact (nn-mult-3-5 10) => [3 5 6 9])
-(fact (reduce + (nn-mult-3-5 10)) => 23)
-(fact (reduce + (nn-mult-3-5 1000)) => 233168)
 
                                         ; Problem 2
 
@@ -101,10 +61,5 @@
 
                                         ; other pist
 ;(take 32 (iterate #(cons (+ (first %) (second %)) %) [2 1]))
-
-                                        ; problem3
-
-The prime factors of 13195 are 5, 7, 13 and 29.
-What is the largest prime factor of the number 600851475143 ?
 
       
