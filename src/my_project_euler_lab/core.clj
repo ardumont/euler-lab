@@ -56,7 +56,9 @@
 
 ;By considering the terms in the Fibonacci sequence whose values do
 ;not exceed four million, find the sum of the even-valued
-;terms.
+                                        ;terms.
+
+                                        ; fibonacci simple
 
 (defn fibonacci "Fibonacci suite"
   [n]
@@ -77,5 +79,31 @@
 (fact (fibonacci 4) => [5 3 2 1])
 (fact (fibonacci 10) => [89 55 34 21 13 8 5 3 2 1])
 
+                                        ; compute fibonacci
+
+(defn fibonacci-borne "Fibonacci suite"
+  [n borne]
+  (if (= n 1)
+    [1]
+    (if (= n 2)
+      [2 1]
+      (loop [current 3 fib [2 1]]
+        (let [ sum (+ (first fib) (second fib))]
+          (if (or (> current n) (> sum borne))
+            fib
+            (recur (inc current) (cons sum fib)))
+          )))
+    ))
+
 ; compute the sum of even number in the fibonacci suite up to 4000000
-(reduce + (filter #(zero? (rem % 2)) (fibonacci 4000000)))
+(reduce + (filter #(zero? (rem % 2)) (fibonacci-borne 50 4000000)))
+
+                                        ; denis implem
+
+;compute the sum and the fibonacci simultaneously
+
+                                        ; other pist
+;(take 32 (iterate #(cons (+ (first %) (second %)) %) [2 1]))
+
+
+      
