@@ -1,4 +1,4 @@
-(ns my-project-euler-lab.core.pb-prime
+(ns my-project-euler-lab.core-pb-prime
   (:use [clojure.test               :only [run-tests]])
   (:use [midje.sweet])
   (:use [clojure.contrib.repl-utils :only [show]])
