@@ -1,4 +1,4 @@
-(ns my-project-euler-lab.core
+(ns my-project-euler-lab.core-pb-3
   (:use [clojure.test               :only [run-tests]])
   (:use [midje.sweet])
   (:use [clojure.contrib.repl-utils :only [show]])
@@ -22,11 +22,16 @@
   
   )
 
-(fact (prime-numbers 0) => '())
-(fact (prime-numbers 1) => '(2))
-(fact (prime-numbers 2) => '(2 3))
-(fact (prime-numbers 3) => '(2 3 5))
-;.;. Excellence is not an act but a habit. -- Aristotle
-(fact (prime-numbers 4) => '(2 3 5 7))
+
+;.;. It takes time to succeed because success is merely the natural reward
+;.;. of taking time to do anything well. -- Ross
+(fact
+  (prime-numbers 0) => '()
+  (prime-numbers 1) => '(2)
+  (prime-numbers 2) => '(2 3)
+  (prime-numbers 3) => '(2 3 5)
+  (prime-numbers 4) => '(2 3 5 7)
+  )
+
 
 
