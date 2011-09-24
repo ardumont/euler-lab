@@ -49,15 +49,14 @@
 
 (defn max-pal-4 "Find the largest palindrome"
   []
-  (last (sort (filter #(and (>= (/ % 1000) 1) (pal? (re-seq #"[\d]" (.toString %))))
-                  (test-gen-all-mult (take 90 (iterate inc 10)))))))
+  (reduce max (filter #(and (>= (/ % 1000) 1) (pal? (re-seq #"[\d]" (.toString %))))
+                (test-gen-all-mult (take 90 (iterate inc 10))))))
 
 (fact (max-pal-4) => 9009)
 
 (defn max-pal-6 "Find the largest palindrome"
   []
-  (last (sort (filter #(and (>= (/ % 100000) 1) (pal? (re-seq #"[\d]" (.toString %))))
-                  (test-gen-all-mult (take 900 (iterate inc 100)))))))
+  (reduce max (filter #(and (>= (/ % 100000) 1) (pal? (re-seq #"[\d]" (.toString %))))
+                 (test-gen-all-mult (take 900 (iterate inc 100))))))
 
-;.;. The reward of a thing well done is to have done it. -- Emerson
 (fact (max-pal-6) => 906609)
