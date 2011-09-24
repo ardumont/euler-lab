@@ -52,8 +52,14 @@
   (reduce max (filter #(and (>= (/ % 1000) 1) (pal? (re-seq #"[\d]" (.toString %))))
                 (test-gen-all-mult (take 90 (iterate inc 10))))))
 
+;.;. The highest reward for a man's toil is not what he gets for it but
+;.;. what he becomes by it. -- Ruskin
 (fact (max-pal-4) => 9009)
 
+;.;. The next function taunts you still. Will you rise to the challenge? --
+;.;. anonymous
+;.;. Whoever wants to reach a distant goal must take small steps. --
+;.;. fortune cookie
 (defn max-pal-6 "Find the largest palindrome"
   []
   (reduce max (filter #(and (>= (/ % 100000) 1) (pal? (re-seq #"[\d]" (.toString %))))
