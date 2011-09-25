@@ -5,6 +5,7 @@
   (:use [clojure.pprint             :only [pprint]])
   (:use [clojure.walk               :only [macroexpand-all]]))
 
+; Problem 8
 
 ;Find the greatest product of five consecutive digits in the 1000-digit number.
 
@@ -29,3 +30,57 @@
 ;05886116467109405077541002256983155200055935729725
 ;71636269561882670428252483600823257530420752963450
 
+(defn num-digits-into-vec "Transform big integer into a vector of digits."
+  [num]
+  (loop [n num acc nil]
+    (if (zero? n)
+      (vec acc)
+      (recur (quot n 10) (cons (rem n 10) acc)))))
+
+(fact
+  (num-digits-into-vec 100) => [1 0 0]
+  (num-digits-into-vec 100256789) => [1 0 0 2 5 6 7 8 9]
+  )
+
+(def vec-to-parse (num-digits-into-vec 7316717653133062491922511967442657474235534919493496983520312774506326239578318016984801869478851843858615607891129494954595017379583319528532088055111254069874715852386305071569329096329522744304355766896648950445244523161731856403098711121722383113622298934233803081353362766142828064444866452387493035890729629049156044077239071381051585930796086670172427121883998797908792274921901699720888093776657273330010533678812202354218097512545405947522435258490771167055601360483958644670632441572215539753697817977846174064955149290862569321978468622482839722413756570560574902614079729686524145351004748216637048440319989000889524345065854122758866688116427171479924442928230863465674813919123162824586178664583591245665294765456828489128831426076900422421902267105562632111110937054421750694165896040807198403850962455444362981230987879927244284909188845801561660979191338754992005240636899125607176060588611646710940507754100225698315520005593572972571636269561882670428252483600823257530420752963450))
+
+(fact
+  (first vec-to-parse) => 7
+  (second vec-to-parse) => 3
+  (last vec-to-parse) => 0
+)
+
+; idea: parse the sequence 5 by 5 until the end of the sequence and keep in memory the
+; max product computed for each 5 digit sequences long 
+
+(defn find-max-product "Find the max product of nb-digit sequences long in the main sequence seq"
+  [vec nb-digit]
+  (let [countv (count vec)]
+    (if (or (zero? countv) (zero? nb-digit)) 
+      0
+      (loop [start 0 end nb-digit maxi 1]
+        (if (> end countv)
+          maxi
+          (let [pdt (reduce * (subvec vec start end))]
+            (recur (inc start) (+ start 1 nb-digit) (max maxi pdt))
+            )
+          )
+        )
+      )
+    )
+  )
+
+;.;. The biggest reward for a thing well done is to have done it. --
+;.;. Voltaire
+(fact
+    (find-max-product [1 2 3] 0) => 0
+    (find-max-product [] 0) => 0
+    (find-max-product [] 1) => 0
+    (find-max-product [1 2 3] 1) => 3
+    (find-max-product [1 2 3] 2) => 6
+    (find-max-product [1 2 3 4 5 6] 3) => 120
+    (find-max-product [1 2 3 4 5 6] 5) => 720
+    (find-max-product [6 2 3 4 5 1] 5) => 720
+    (find-max-product [6 2 3 4 5 1] 5) => 720
+    (find-max-product vec-to-parse 5) => 40824
+  )
