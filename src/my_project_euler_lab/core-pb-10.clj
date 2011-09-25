@@ -23,6 +23,8 @@
           )
   )
 
+;.;. Before the reward there must be labor. You plant before you
+;.;. harvest. You sow in tears before you reap joy. -- Ransom
 (fact
   (sum-prime-number-bf 0) => 0
   (sum-prime-number-bf 1) => 0
@@ -50,7 +52,6 @@
     )
   )
 
-;.;. The journey is the reward. -- traditional
 (fact
   (sum-prime-numbers 0) => 0
   (sum-prime-numbers 1) => 0
