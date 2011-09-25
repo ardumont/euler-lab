@@ -33,9 +33,7 @@
   (- (square (reduce + range))  (reduce + (map square range)))
   )
 
-;.;. FAIL at (NO_SOURCE_FILE:1)
-;.;.     Expected: 2640
-;.;.       Actual: 25164150
+;.;. Hey! You're green! Refactor then we get to go red again! -- @zspencer
 (fact
   (diff-sum-square-square-sum (range 1 11)) => 2640
     (diff-sum-square-square-sum (range 1 101)) => 25164150
