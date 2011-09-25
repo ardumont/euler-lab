@@ -5,7 +5,6 @@
   (:use [clojure.pprint             :only [pprint]])
   (:use [clojure.walk               :only [macroexpand-all]])
   (:use clojure.contrib.math)
-  ;(:use my-project-euler-lab.core-pb-7)
   )
                                         ; problem 10
 
@@ -15,33 +14,51 @@
 
                                         ; brute force
 
-;(reduce + (filter #(<= 2000000 %) (prime-numbers-improved 2000000)))
+(defn sum-prime-number-bf "Compute the sum of all prime number below the borne - Brute force"
+  [borne]
+    (reduce +
+          (filter #(<= % borne)
+                  (my-project-euler-lab.core-pb-7/prime-numbers-improved borne)
+                  )
+          )
+  )
+
+(fact
+  (sum-prime-number-bf 0) => 0
+  (sum-prime-number-bf 1) => 0
+  (sum-prime-number-bf 2) => 2
+  (sum-prime-number-bf 3) => 5
+  (sum-prime-number-bf 4) => 5
+  (sum-prime-number-bf 5) => 10
+  (sum-prime-number-bf 7) => 17
+;  (sum-prime-number-bf 2000000) => 142913828922
+)
 
                                         ; More subtle
 
 (defn sum-prime-numbers "Return the list of the n first prime numbers"
   [borne]
-  (if (zero? borne)
+  (if (or (zero? borne) (== 1 borne))
     0
     (loop [candidate 3 sum 2 primes [2]]
     (if (< borne candidate)
       sum
-      (if (every? #(not= 0 (rem candidate %)) (take (floor (sqrt candidate)) primes))
+      (if (not (some #(zero? (rem candidate %)) (take (floor (sqrt candidate)) primes)))
         (recur (+ 2 candidate) (+ sum candidate) (conj primes candidate))
         (recur (+ 2 candidate) sum primes)
         )))
     )
   )
 
-;.;. Work joyfully and peacefully, knowing that right thoughts and right
-;.;. efforts will inevitably bring about right results. -- Allen
+;.;. The journey is the reward. -- traditional
 (fact
   (sum-prime-numbers 0) => 0
-  (sum-prime-numbers 1) => 2
+  (sum-prime-numbers 1) => 0
   (sum-prime-numbers 2) => 2
   (sum-prime-numbers 3) => 5
   (sum-prime-numbers 4) => 5
   (sum-prime-numbers 5) => 10
   (sum-prime-numbers 7) => 17
+  ;(sum-prime-numbers 2000000) => 142913828922
 )
 
