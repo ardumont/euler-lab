@@ -1,13 +1,13 @@
 # my-project-euler-lab
 
-FIXME: write description
+A project to host my code to resolve the excellent problems from http://projecteuler.net/about.
 
 ## Usage
 
-FIXME: write
+As you want.
 
 ## License
 
-Copyright (C) 2011 FIXME
+Copyright (C) 2011 https://github.com/ardumont
 
 Distributed under the Eclipse Public License, the same as Clojure.
