@@ -37,10 +37,12 @@
 
 ; all primes except 2 are odd, so starting from 3, we can increment
 ; with 2.
+
 ; Another principles tells us that to see if a number is a prime, it
 ; suffices to check that the remainder is 0 for the prime from 2 to
 ; sqrt of the number to test
 
+; return expression every? not= 0 in not some zero?
 (defn prime-numbers-improved "Return the list of the n first prime numbers"
   [n]
   (if (zero? n)
@@ -48,12 +50,15 @@
     (loop [candidate 3 current (dec n) primes [2]]
       (if (zero? current)
         primes
-        (if (every? #(not= 0 (rem candidate %)) (take (floor (sqrt candidate)) primes))
+        (if (not (some #(zero? (rem candidate %)) (take (floor (sqrt candidate)) primes)))
           (recur (+ 2 candidate) (dec current) (conj primes candidate))
           (recur (+ 2 candidate) current primes)
           ))))
   )
 
+;.;. Any intelligent fool can make things bigger, more complex, and more
+;.;. violent. It takes a touch of genius -- and a lot of courage -- to move
+;.;. in the opposite direction. -- Schumacher
 (fact
   (prime-numbers-improved 0) => '()
   (prime-numbers-improved 1) => '(2)
