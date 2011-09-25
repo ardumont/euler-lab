@@ -56,9 +56,7 @@
           ))))
   )
 
-;.;. Any intelligent fool can make things bigger, more complex, and more
-;.;. violent. It takes a touch of genius -- and a lot of courage -- to move
-;.;. in the opposite direction. -- Schumacher
+;.;. Simplicity, carried to the extreme, becomes elegance. -- Jon Franklin
 (fact
   (prime-numbers-improved 0) => '()
   (prime-numbers-improved 1) => '(2)
