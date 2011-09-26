@@ -18,14 +18,6 @@
 ; (2) a^2 + b^2 = c^2
 ; (3) a+b+c=1000 <=> a+b=1000-c 
 
-; (3) <=> (a + b)^2 = (1000 - c)^2
-; (3) <=> a^2 + b^2 + 2ab = 1000^2 - 2000c + c^2
-; (3) <=> a^2 + b^2 = 1000^2 - 2000c + c^2 - 2ab
-; (3),(2) <=> c^2 = 1000^2 - 2000c + c^2 - 2ab
-; (3),(2) <=> 2000c - 1000^2 = -2ab
-; (3),(2) <=> 500 (1000 - c) = ab
-; (3),(2) <=> 1000 = ab/500 - c
-
 (defn is-triplet-ok? "Is the triplet is ok according to the hypothesis of the problem?"
   [a b c]
   (and (< a b c) (== 1000 (+ a b c)) (== (+ (* a a) (* b b)) (* c c))))
