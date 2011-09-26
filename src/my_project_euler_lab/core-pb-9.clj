@@ -1,4 +1,4 @@
-(ns my-project-euler-lab.core-pb-9
+ (ns my-project-euler-lab.core-pb-9
   (:use [clojure.test               :only [run-tests]])
   (:use [midje.sweet])
   (:use [clojure.contrib.repl-utils :only [show]])
@@ -26,30 +26,29 @@
 ; (3),(2) <=> 500 (1000 - c) = ab
 ; (3),(2) <=> 1000 = ab/500 - c
 
-(defn pythagorean-triplet? "Compute a^2 + b^2 = c^2"
-  [a b c]
-  (== (+ (* a a) (* b b)) (* c c)))
-
-(fact
-  (pythagorean-triplet? 1 2 3) => false
-  (pythagorean-triplet? 3 4 5) => true
- )
-
-(defn sum-1000? "Is the sum of 3 elements 1000?"
-  [a b c]
-  (= 1000 (+ a b c)))
-
-;.;. Happiness is not a reward / it is a consequence. -- Ingersoll
-(fact
-  (sum-1000? 1000 0 0) => true
-  (sum-1000? 500 500 1) => false
-  )
-
 (defn is-triplet-ok? "Is the triplet is ok according to the hypothesis of the problem?"
   [a b c]
-  (and (< a b c) (= 1000 (+ a b c)) (== (+ (* a a) (* b b)) (* c c))))
+  (and (< a b c) (== 1000 (+ a b c)) (== (+ (* a a) (* b b)) (* c c))))
+
+(defn find-triplet-ok-bf "Find the triplet that correspond to the hypothesis of the problem."
+  [vec]
+  (loop [nnat-sq0 vec nnat-sq1 (filter #(< (first nnat-sq0) %) vec) cnt (count nnat-sq1)]
+    (if (== 1 (count nnat-sq0))
+      []
+      (if (== 1 cnt); recur over nnat-sq1
+        (let [rest-nnat0 (rest nnat-sq0) rest-nnat1 (filter #(< (first rest-nnat0) %) rest-nnat0)]
+          (recur rest-nnat0 rest-nnat1 (count rest-nnat1))); end nnat-sq1
+        (let [a (first nnat-sq0) b (first nnat-sq1) c (- 1000 a b)]
+          (if (is-triplet-ok? a b c)
+            [a b c]
+            (recur nnat-sq0 (rest nnat-sq1) (dec cnt))))
+        ))
+    )
+  )
 
 (fact
-  is-triplet-ok? [1 2 3] => false
-  is-triplet-ok? [3 4 5] => false
+;  (find-triplet-ok-bf (range 0 (sqrt 1000))) => [200 375 425]
+  (find-triplet-ok-bf (range 0 1000)) => [200 375 425]
   )
+
+(fact (reduce * (find-triplet-ok-bf (range 0 1000))) => 31875000)
