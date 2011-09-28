@@ -5,6 +5,7 @@
   (:use [clojure.pprint             :only [pprint]])
   (:use [clojure.walk               :only [macroexpand-all]])
   (:use clojure.contrib.math)
+;  (:use ( my-project-euler-lab.core-pb-7 prime-numbers))
   )
                                         ; problem 10
 
@@ -14,27 +15,25 @@
 
                                         ; brute force
 
-(defn sum-prime-number-bf "Compute the sum of all prime number below the borne - Brute force"
-  [borne]
-    (reduce +
-          (filter #(<= % borne)
-                  (my-project-euler-lab.core-pb-7/prime-numbers-improved borne)
-                  )
-          )
-  )
+;(defn sum-prime-number-bf "Compute the sum of all prime number below the borne - Brute force"
+;  [borne]
+;(reduce +
+;(filter #(<= % borne)
+;        (my-project-euler-lab.core-pb-7/prime-numbers-improved borne)
+;)))
 
 ;.;. Before the reward there must be labor. You plant before you
 ;.;. harvest. You sow in tears before you reap joy. -- Ransom
-(fact
-  (sum-prime-number-bf 0) => 0
-  (sum-prime-number-bf 1) => 0
-  (sum-prime-number-bf 2) => 2
-  (sum-prime-number-bf 3) => 5
-  (sum-prime-number-bf 4) => 5
-  (sum-prime-number-bf 5) => 10
-  (sum-prime-number-bf 7) => 17
+;(fact
+;  (sum-prime-number-bf 0) => 0
+;  (sum-prime-number-bf 1) => 0
+;  (sum-prime-number-bf 2) => 2
+;  (sum-prime-number-bf 3) => 5
+;  (sum-prime-number-bf 4) => 5
+;  (sum-prime-number-bf 5) => 10
+;  (sum-prime-number-bf 7) => 17
 ;  (sum-prime-number-bf 2000000) => 142913828922
-)
+;)
 
                                         ; More subtle
 

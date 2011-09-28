@@ -1,4 +1,4 @@
- (ns my-project-euler-lab.core-pb-11
+ (ns my-project-euler-lab.core_pb_11
   (:use [clojure.test               :only [run-tests]])
   (:use [midje.sweet])
   (:use [clojure.contrib.repl-utils :only [show]])
@@ -34,3 +34,45 @@
 ;What is the greatest product of four adjacent numbers in any
 ;direction (up, down, left, right, or diagonally) in the 20×20 grid?
 
+;(def seq-pb-11 (conj [] [8 2 22 97 38 15 0 40 0 75 4 5 7 78 52 12 50 77 91 8]))
+;(seq-pb-11 conj seq-pb-11 [49 49 99 40 17 81 18 57 60 87 17 40 98 43
+;69 48 4 56 62 0]))
+
+
+; computes the 4x4 matrix from a 20x20 matrix
+
+; computes the max in every direction of the product of 4 numbers 
+
+(defn max-4x1 "Computes the max of a matrix 4x4"
+  ([[a b c d]] (* a b c d)))
+
+(fact (max-4x1 [10 20 30 40]) => 240000)
+
+(defn max-4x2 "Computes the max of a matrix 4x4"
+  [[a b c d] _]
+  (* a b c d))
+
+(fact (max-4x2 [10 20 30 40] [1 2 3 4]) => 240000)
+
+(defn max-4x4 "Computes the max of a matrix 4x4"
+  [[a b c d]
+   [e f g h]
+   [i j k l]
+   [m n o p]]
+  (reduce max [(* a b c d)
+               (* e f g h)
+               (* i j k l)
+               (* n m o p)
+               (* a f k p)
+               (* d g j m)
+               (* a e i m)
+               (* b f j n)
+               (* c g k o)
+               (* d h l p)
+               ]))
+
+(fact
+  (max-4x4 [1  2  3  4]
+           [5  6  7  8]
+           [9  10 11 12]
+           [13 14 15 16]) => 43680)
