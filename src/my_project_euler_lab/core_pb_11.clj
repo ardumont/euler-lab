@@ -52,18 +52,17 @@
    [e f g h]
    [i j k l]
    [m n o p]]
-  (do (println [a b c d] [e f g h] [i j k l] [n m o p])
-      (reduce max [(* a b c d)
-                   (* e f g h)
-                   (* i j k l)
-                   (* n m o p)
-                   (* a f k p)
-                   (* d g j m)
-                   (* a e i m)
-                   (* b f j n)
-                   (* c g k o)
-                   (* d h l p)
-                   ])))
+  (reduce max [(* a b c d)
+               (* e f g h)
+               (* i j k l)
+               (* n m o p)
+               (* a f k p)
+               (* d g j m)
+               (* a e i m)
+               (* b f j n)
+               (* c g k o)
+               (* d h l p)
+               ]))
 
 (fact
   (max-4x4 [1  2  3  4]
@@ -100,20 +99,19 @@
 (defn my-max-20x20 "compute the max from a 20x20 matrix"
   [m]
   (loop [i 0 j 0 nmax 0]
-    (do (println i ";" j ";" nmax)
-        (if (> j 16)
-          nmax
-          (if (> i 16)
-            (recur 0 (inc j) nmax)
-            (let [i-prime (+ i 4)
-                  vec0 (subvec (nth m j)       i i-prime)
-                  vec1 (subvec (nth m (+ j 1)) i i-prime)
-                  vec2 (subvec (nth m (+ j 2)) i i-prime)
-                  vec3 (subvec (nth m (+ j 3)) i i-prime)
-                  nmaxx (max-4x4 vec0 vec1 vec2 vec3)
-                  ]
-              (recur (inc i) j (max nmax nmaxx))
-              ))))))
+    (if (> j 16)
+      nmax
+      (if (> i 16)
+        (recur 0 (inc j) nmax)
+        (let [i-prime (+ i 4)
+              vec0 (subvec (nth m j)       i i-prime)
+              vec1 (subvec (nth m (+ j 1)) i i-prime)
+              vec2 (subvec (nth m (+ j 2)) i i-prime)
+              vec3 (subvec (nth m (+ j 3)) i i-prime)
+              nmaxx (max-4x4 vec0 vec1 vec2 vec3)
+              ]
+          (recur (inc i) j (max nmax nmaxx))
+          )))))
 
 (fact
   (my-max-20x20 mat-20x20) => 70600674
