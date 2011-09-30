@@ -45,7 +45,7 @@
     (if (= n 2)
       [2 1]
       (loop [current 3 fib [2 1]]
-        (let [ sum (+ (first fib) (second fib))]
+        (let [sum (+ (first fib) (second fib))]
           (if (or (> current n) (> sum borne))
             fib
             (recur (inc current) (cons sum fib)))
