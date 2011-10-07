@@ -1,4 +1,4 @@
-(ns my-project-euler-lab.play_with_primes
+(ns my-project-euler-lab.play-with-primes
   (:use [clojure.test               :only [run-tests]])
   (:use [midje.sweet])
   (:use [clojure.contrib.repl-utils :only [show]])
@@ -20,6 +20,14 @@
           ))))
   )
 
+;.;. Woohoo! -- @zspencer
+(fact
+  (prime-numbers-improved 5) => [2 3 5 7 11]
+  (prime-numbers-improved 10) => [2 3 5 7 11 13 17 19 23 29]
+  (prime-numbers-improved 15) => [2 3 5 7 11 13 17 19 23 29 31 37 41 43 47]
+  )
+
+; this one, i do not like, the decomposition of divisor is terrible!
 (defn dec-prime-number "Compute the decomposition in prime numbers."
   [n]
   (cond
