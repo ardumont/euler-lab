@@ -17,10 +17,8 @@
         (if (not (some #(zero? (rem candidate %)) (take (floor (sqrt candidate)) primes)))
           (recur (+ 2 candidate) (dec current) (conj primes candidate))
           (recur (+ 2 candidate) current primes)
-          ))))
-  )
+          )))))
 
-;.;. Woohoo! -- @zspencer
 (fact
   (prime-numbers-improved 5) => [2 3 5 7 11]
   (prime-numbers-improved 10) => [2 3 5 7 11 13 17 19 23 29]
@@ -46,6 +44,8 @@
                (recur (conj acc-all-divisors divisor-prime) acc-div-primes (/ num divisor-prime))
                (recur acc-all-divisors (rest acc-div-primes) num)))))))))
 
+;.;. Of course the universe *is* out to get us, but it's not going to do it
+;.;. by passing a null to one of our methods. -- Ron Jeffries
 (fact
   (dec-prime-number 0)            => []
   (dec-prime-number 1)            => []
