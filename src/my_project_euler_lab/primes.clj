@@ -25,38 +25,52 @@
   (prime-numbers-improved 15) => [2 3 5 7 11 13 17 19 23 29 31 37 41 43 47]
   )
 
-; this one, i do not like, the decomposition of divisor is terrible!
-(defn dec-prime-number "Compute the decomposition in prime numbers."
-  [n]
+(defn dec-prime-numbers-with-primes "Compute the decomposition in prime numbers."
+  [primes n]
   (cond
    (<= n 1) []
-   (== 2 n) [2]
    :else
-   (let [primes (prime-numbers-improved (ceil (sqrt n)))
-         divs (filter #(not= nil %) (map #(if (zero? (rem %1 %2)) %2) (repeat (count primes) n) primes))]
-     (loop [acc-all-divisors [] acc-div-primes divs num n]
-       (if (= 1 num)
-         acc-all-divisors
-         (if (= nil (first acc-div-primes))
-           [n]
-           (let [divisor-prime (first acc-div-primes)]
-             (if (zero? (rem num divisor-prime))
-               (recur (conj acc-all-divisors divisor-prime) acc-div-primes (/ num divisor-prime))
-               (recur acc-all-divisors (rest acc-div-primes) num)))))))))
+   (loop [acc-all-divisors [] acc-div-primes primes num n]
+     (if (= 1 num)
+       acc-all-divisors
+       (let [divisor-prime (first acc-div-primes)]
+         (if (zero? (rem num divisor-prime))
+           (recur (conj acc-all-divisors divisor-prime) acc-div-primes (/ num divisor-prime))
+           (recur acc-all-divisors (rest acc-div-primes) num)))))))
 
-;.;. Of course the universe *is* out to get us, but it's not going to do it
-;.;. by passing a null to one of our methods. -- Ron Jeffries
 (fact
-  (dec-prime-number 0)            => []
-  (dec-prime-number 1)            => []
-  (dec-prime-number 2)            => [2]
-  (dec-prime-number 3)            => [3]
-  (dec-prime-number 4)            => [2 2]
-  (dec-prime-number 5)            => [5]
-  (dec-prime-number 10)           => [2 5]
-  (dec-prime-number 28)           => [2 2 7]
-  (dec-prime-number 53)           => [53]
-  (dec-prime-number 67)           => [67]
-  (dec-prime-number 76)           => [2 2 19]
-  (dec-prime-number 100)          => [2 2 5 5]
+  (dec-prime-numbers-with-primes [] 0)               => []
+  (dec-prime-numbers-with-primes [] 1)               => []
+  (dec-prime-numbers-with-primes [2] 2)              => [2]
+  (dec-prime-numbers-with-primes [2 3] 3)            => [3]
+  (dec-prime-numbers-with-primes [2 3] 4)            => [2 2]
+  (dec-prime-numbers-with-primes [2 3 5] 5)          => [5]
+  (dec-prime-numbers-with-primes [2 3 5 7 11] 10)    => [2 5]
+  (dec-prime-numbers-with-primes [2 3 5 7 11] 11)    => [11]
+  (dec-prime-numbers-with-primes [2 3 5 7 11] 28)    => [2 2 7]
+  (dec-prime-numbers-with-primes [2 3 5 7 11 53] 53) => [53]
+  (dec-prime-numbers-with-primes [2 3 5 7 11 67] 67) => [67]
+  (dec-prime-numbers-with-primes [2 3 5 7 11 19] 76) => [2 2 19]
+  (dec-prime-numbers-with-primes [2 3 5 7 11] 100) => [2 2 5 5])
+
+(defn dec-prime-numbers "Compute the decomposition in prime number of a number"
+  [n]
+  (let [primes (prime-numbers-improved n)]
+    (dec-prime-numbers-with-primes primes n)))
+
+;.;. Woohoo! -- @zspencer
+(fact
+  (dec-prime-numbers 0)            => []
+  (dec-prime-numbers 1)            => []
+  (dec-prime-numbers 2)            => [2]
+  (dec-prime-numbers 3)            => [3]
+  (dec-prime-numbers 4)            => [2 2]
+  (dec-prime-numbers 5)            => [5]
+  (dec-prime-numbers 10)           => [2 5]
+  (dec-prime-numbers 11)           => [11]
+  (dec-prime-numbers 28)           => [2 2 7]
+  (dec-prime-numbers 53)           => [53]
+  (dec-prime-numbers 67)           => [67]
+  (dec-prime-numbers 76)           => [2 2 19]
+  (dec-prime-numbers 100)          => [2 2 5 5]
   )
