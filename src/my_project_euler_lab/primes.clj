@@ -1,4 +1,4 @@
-(ns my-project-euler-lab.play-with-primes
+(ns my-project-euler-lab.primes
   (:use [clojure.test               :only [run-tests]])
   (:use [midje.sweet])
   (:use [clojure.contrib.repl-utils :only [show]])
