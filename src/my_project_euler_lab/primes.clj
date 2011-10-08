@@ -58,7 +58,6 @@
   (let [primes (prime-numbers-improved n)]
     (dec-prime-numbers-with-primes primes n)))
 
-;.;. Woohoo! -- @zspencer
 (fact
   (dec-prime-numbers 0)            => []
   (dec-prime-numbers 1)            => []
@@ -75,4 +74,33 @@
   (dec-prime-numbers 100)          => [2 2 5 5]
   )
 
+(defn prime? "Is the number a prime?"
+  [n primes-seq]
+  (not (some #(zero? (rem n %)) (take (floor (sqrt n)) primes-seq)))
+  )
 
+(fact
+  (prime? 11 [2 3 5]) => true
+  (prime? 12 [2 3 5]) => false
+  (prime? 67 [2 3 5 7 11 13 17]) => true
+  )
+
+(defn lazy-primes "A lazy seq of primes, using the 'n is prime if not divisible by an int > sqrt n' optimization"
+  ([]  (lazy-primes 2 []))
+  ([n prevs]
+     (lazy-seq
+      (cons n
+            (lazy-primes
+             (loop [curr (inc n)]
+               (if (prime? curr prevs)
+                 curr
+                 (recur (inc curr))))
+             (conj prevs n))))))
+
+;.;. O frabjous day! Callooh! Callay! -- Lewis Carroll
+(fact
+  (take 5 (lazy-primes))   => [2 3 5 7 11]
+  (take 10 (lazy-primes))  => [2 3 5 7 11 13 17 19 23 29]
+  (take 15 (lazy-primes))  => [2 3 5 7 11 13 17 19 23 29 31 37 41 43 47]
+  (take 100 (lazy-primes)) => [ 2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83 89 97 101 103 107 109 113 127 131 137 139 149 151 157 163 167 173 179 181 191 193 197 199 211 223 227 229 233 239 241 251 257 263 269 271 277 281 283 293 307 311 313 317 331 337 347 349 353 359 367 373 379 383 389 397 401 409 419 421 431 433 439 443 449 457 461 463 467 479 487 491 499 503 509 521 523 541]
+)
