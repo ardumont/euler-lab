@@ -34,4 +34,51 @@
 
 (fact
   (seq-euler-14 13) => [13 40 20 10 5 16 8 4 2 1]
+  (seq-euler-14 20) => [20 10 5 16 8 4 2 1]
+  (seq-euler-14 1024) => [1024 512 256 128 64 32 16 8 4 2 1]
   )
+
+(defn seq-euler-14-count "Sequence pb 14 but only for counting the nb of elements"
+  [n]
+  (loop [curr n cnt 1]
+    (if (= 1 curr)
+      cnt
+      (if (even? curr)
+        (recur (/ curr 2) (inc cnt))
+        (recur (+ (* 3 curr) 1) (inc cnt))))))
+
+(fact
+  (seq-euler-14-count 13) => 10
+  (seq-euler-14-count 20) => 8
+  (seq-euler-14-count 1024) => 11
+  (seq-euler-14-count (expt 2 20)) => 21
+  ) 
+
+; seq which begins with a power of 2 will be the smallest
+
+; if n is odd => n=2p+1, for all p in {1,(n-1)/2}
+;             => 3n+1 = 3(2p+1) + 1 = 6p + 4
+; then 3n+1 is even
+
+; if n is even => n = 2p for all p in {1,n/2}
+;              => n/2 = 2p/2 = p
+; then n/2 can be even or odd
+
+(defn find-greatest-seq-below-start "Find the greatest sequence with the sequence starting from a number below 1 000 000"
+  [starting-from end]
+  (loop [cnt starting-from maxi 1 start starting-from]; maxi -> max result from
+                                        ; all computations, start ->
+                                        ; counter from which the max is
+    (if (<= cnt end)
+      [start maxi]
+      (let [seq-euler-res (seq-euler-14-count cnt)]
+        (if (< maxi seq-euler-res)
+          (recur (dec cnt) seq-euler-res cnt)
+          (recur (dec cnt) maxi start)))))
+  )
+
+;.;. The next function taunts you still. Will you rise to the challenge? --
+;.;. anonymous
+(fact
+;    (find-greatest-seq-below-start 1000000 500000) => [837799 525]
+    )
