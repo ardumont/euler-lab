@@ -97,7 +97,7 @@
                  (recur (inc curr))))
              (conj prevs n))))))
 
-;.;. O frabjous day! Callooh! Callay! -- Lewis Carroll
+;.;. Woohoo! -- @zspencer
 (fact
   (take 5 (lazy-primes))   => [2 3 5 7 11]
   (take 10 (lazy-primes))  => [2 3 5 7 11 13 17 19 23 29]
