@@ -77,8 +77,6 @@
           (recur (dec cnt) maxi start)))))
   )
 
-;.;. The next function taunts you still. Will you rise to the challenge? --
-;.;. anonymous
 (fact
 ;    (find-greatest-seq-below-start 1000000 500000) => [837799 525]
     )
@@ -92,4 +90,3 @@
 ;1000000 1))
 ;"Elapsed time: 18319.081637 msecs"
 ;[837799 525]
-
