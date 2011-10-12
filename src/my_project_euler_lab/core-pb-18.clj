@@ -51,12 +51,6 @@
 ;          [3 2] {:value 9 :childs {[]}}
 ;          [3 3] {:value 3 :childs {[]}}
 
-; first: {:3 [{:7 [{:2 [8 5]} {:4 [5 9]}]} {:4 [{:4 [5 9]} {:6 [9 3]}]}]} -> heavy
-;    3            [0 0]              0        p 1
-;   7 4        [1 0] [1 1]          1 2       p 2
-;  2 4 6     [2 0] [2 1] [2 2]     3 4 5      p 3
-; 8 5 9 3  [3 0][3 1][3 2][3 3]   6 7 8 9     p 4
-
 ; fixme: there is some nodes which have children and they do not need to exist
 ; find some way to not have them
 
@@ -74,42 +68,88 @@
     )
   )
 
-;.;. A clean boundary between useful abstractions and the grubby code that
-;.;. touches the real world is always a good thing. -- Ron Jeffries
 (fact
   (depth [1]) => 1
   (depth [10 3 3]) => 2
   ; not a triangle this one!
   (depth [10 3 3 1 2 3]) => 3
   (depth [10 3 3 1 2 3 4]) => nil
-)
+  )
+
+(defn coordinates "Make a vector of coordinates"
+  [n]
+  (cond (zero? n) []
+        (= 1 n) [[0 0]]
+        :else (let [n-minus-1 (dec n)]
+                (loop [acc [] cnt 0 x 0]
+                  (if (<= n cnt)
+                    acc
+                    (let [map-coord (map #(vec [x %]) (range 0 (inc x)))
+                          concat-acc (concat acc map-coord)]
+                      (recur concat-acc (count concat-acc) (inc x)))
+                    )
+                  )))
+  )
+
+;.;. The reward of a thing well done is to have done it. -- Emerson
+( fact
+  (coordinates 0) => []
+  (coordinates 1) => [[0 0]]
+  (coordinates 3) => [[0 0] [1 0] [1 1]]
+  (coordinates 6) => [[0 0]
+                      [1 0] [1 1]
+                      [2 0] [2 1] [2 2]]
+  (coordinates 10) => [[0 0]
+                      [1 0] [1 1]
+                      [2 0] [2 1] [2 2]
+                      [3 0] [3 1] [3 2] [3 3]]
+  )
+
+(defn coord-from-pos "Determine the coordinate from the position"
+  [n]
+  (nth (coordinates (inc n)) n)
+  )
+
+(fact
+  (coord-from-pos 0) => [0 0]
+  (coord-from-pos 1) => [1 0]
+  (coord-from-pos 2) => [1 1]
+  (coord-from-pos 3) => [2 0]
+  (coord-from-pos 9) => [3 3]
+  )
+
+; first: {:3 [{:7 [{:2 [8 5]} {:4 [5 9]}]} {:4 [{:4 [5 9]} {:6 [9 3]}]}]} -> heavy
+;    3            [0 0]              0        p 1
+;   7 4        [1 0] [1 1]          1 2       p 2
+;  2 4 6     [2 0] [2 1] [2 2]     3 4 5      p 3
+; 8 5 9 3  [3 0][3 1][3 2][3 3]   6 7 8 9     p 4
 
 (defn construct-tree "Construct the graph from the sequence"
-  ([seq] (construct-tree seq {} 0 0 0))
+  ([seq] (construct-tree seq {} 0 0 (depth seq)))
   ([seq t x y depth-seq]
-     (let [fst (first seq)]
+     (let [fst (first seq) count-s (count seq)]
+       (println "fst" fst "count-s" count-s "depth-seq" depth-seq "(- count-s depth-seq)" (- count-s depth-seq))
        (if (= nil fst)
          t
-         (if (pos? (- (count seq) depth-seq))
+         (if (pos? (- count-s depth-seq))
            (let [tree-updated {[x y] {:v fst :c [[(inc x) y] [(inc x) (inc y)]]}}]
              (conj t
-                   (construct-tree (rest seq) tree-updated (inc x) y)
-                   (construct-tree (rest (rest seq)) tree-updated (inc x) (inc y))))
-           (conj t {[x y] {:v fst :c [{}]}})
+                   (construct-tree (rest seq) tree-updated (inc x) y depth-seq)
+                   (construct-tree (rest (rest seq)) tree-updated (inc x) (inc y) depth-seq)))
+           (conj t {[x y] {:v fst :c []}})
            )
          ))))
 
-;    3            [0 0]              0        curr 0
-;   7 4        [1 0] [1 1]          1 2       curr 1
-;  2 4 6     [2 0] [2 1] [2 2]     3 4 5      curr 2
-; 8 5 9 3  [3 0][3 1][3 2][3 3]   6 7 8 9     curr 3
+;    3            [0 0]              0        depth 1
+;   7 4        [1 0] [1 1]          1 2             2
+;  2 4 6     [2 0] [2 1] [2 2]     3 4 5            3
+; 8 5 9 3  [3 0][3 1][3 2][3 3]   6 7 8 9           4
 
 (fact
-  (construct-tree [3 7 4]) => {[1 1] {:v 4, :c [{}]}, [0 0] {:v 3, :c [[1 0] [1 1]]}, [1 0] {:v 7, :c [{}]}}
-  (sort (construct-tree [3 7 4 2 4 6])) => '([[0 0] {:v 3, :c [[1 0] [1 1]]}]
+;  (sort (construct-tree [3])) => {[0 0] {:v 3, :c []}}
+;  (sort (construct-tree [3 7 4])) => {[0 0] {:v 3, :c [[1 0] [1 1]]}, [1 0] {:v 7, :c []}, [1 1] {:v 4, :c []}}
+  (sort (construct-tree [3 7 4 2 10 6])) => '([[0 0] {:v 3, :c [[1 0] [1 1]]}]
                                      [[1 0] {:v 7, :c [[2 0] [2 1]]}] [[1 1] {:v 4, :c [[2 1] [2 2]]}]
-                           [[2 0] {:v 4, :c [[3 0] [3 1] ]}]  [[2 1] {:v 2, :c [[3 1] [3 2]]}]   [[2 2] {:v 4, :c [{}]}]
-                 [[3 0] {:v 2, :c [[4 0] [4 1]]}]   [[3 1] {:v 4, :c [{}]}]   [[3 2] {:v 6, :c [{}]}]
-        [[4 0] {:v 4, :c [{}]}]  [[4 1] {:v 6, :c [{}]}])
+                               [[2 0] {:v 2, :c []}]  [[2 1] {:v 10, :c []}]   [[2 2] {:v 6, :c []}])
 ;  (construct-tree [3 7 4 2 4 6 8 5 9 3]) => 0
   )
