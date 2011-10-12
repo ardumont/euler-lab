@@ -91,7 +91,6 @@
                   )))
   )
 
-;.;. The reward of a thing well done is to have done it. -- Emerson
 ( fact
   (coordinates 0) => []
   (coordinates 1) => [[0 0]]
@@ -125,31 +124,41 @@
 ; 8 5 9 3  [3 0][3 1][3 2][3 3]   6 7 8 9     p 4
 
 (defn construct-tree "Construct the graph from the sequence"
-  ([seq] (construct-tree seq {} 0 0 (depth seq)))
-  ([seq t x y depth-seq]
-     (let [fst (first seq) count-s (count seq)]
-       (println "fst" fst "count-s" count-s "depth-seq" depth-seq "(- count-s depth-seq)" (- count-s depth-seq))
-       (if (= nil fst)
-         t
-         (if (pos? (- count-s depth-seq))
-           (let [tree-updated {[x y] {:v fst :c [[(inc x) y] [(inc x) (inc y)]]}}]
-             (conj t
-                   (construct-tree (rest seq) tree-updated (inc x) y depth-seq)
-                   (construct-tree (rest (rest seq)) tree-updated (inc x) (inc y) depth-seq)))
-           (conj t {[x y] {:v fst :c []}})
-           )
-         ))))
+  [seq]
+  (let [count-s (count seq)
+        depth-s (depth seq)]
+    (loop [my-seq seq
+           map-tree {}
+           curr 0]
+      (if (= curr count-s)
+        map-tree
+        (let [coord (coord-from-pos curr)]
+          (if (< 0 (- (count my-seq) depth-s))
+            (let [x (inc (coord 0))
+                  y (coord 1)]
+              (recur (rest my-seq)
+                     (assoc map-tree coord {:v (first my-seq), :c [[x y] [x (inc y)]]})
+                     (inc curr)))
+            (recur (rest my-seq)
+                   (assoc map-tree coord {:v (first my-seq), :c []})
+                   (inc curr))
+            ))))))
 
 ;    3            [0 0]              0        depth 1
 ;   7 4        [1 0] [1 1]          1 2             2
 ;  2 4 6     [2 0] [2 1] [2 2]     3 4 5            3
 ; 8 5 9 3  [3 0][3 1][3 2][3 3]   6 7 8 9           4
 
+;.;. There is an inevitable reward for good deeds. -- Ming Fu Wu
 (fact
-;  (sort (construct-tree [3])) => {[0 0] {:v 3, :c []}}
-;  (sort (construct-tree [3 7 4])) => {[0 0] {:v 3, :c [[1 0] [1 1]]}, [1 0] {:v 7, :c []}, [1 1] {:v 4, :c []}}
-  (sort (construct-tree [3 7 4 2 10 6])) => '([[0 0] {:v 3, :c [[1 0] [1 1]]}]
-                                     [[1 0] {:v 7, :c [[2 0] [2 1]]}] [[1 1] {:v 4, :c [[2 1] [2 2]]}]
-                               [[2 0] {:v 2, :c []}]  [[2 1] {:v 10, :c []}]   [[2 2] {:v 6, :c []}])
-;  (construct-tree [3 7 4 2 4 6 8 5 9 3]) => 0
+  (construct-tree [3]) => {[0 0] {:v 3 :c []}}
+  (construct-tree [3 7 4]) => { [0 0] {:v 3, :c [[1 0] [1 1]]},
+                                [1 0] {:v 7, :c []}, [1 1] {:v 4, :c []}}
+  (sort (construct-tree [3 7 4 2 10 6])) => (sort { [0 0] {:v 3, :c [[1 0] [1 1]]},
+                                                     [1 0] {:v 7, :c [[2 0] [2 1]]}, [1 1] {:v 4, :c [[2 1] [2 2]]},
+                                                     [2 0] {:v 2, :c []},  [2 1] {:v 10, :c []},   [2 2] {:v 6, :c []}})
+  (sort (construct-tree [3 7 4 2 10 6 8 5 9 3])) => (sort { [0 0] {:v 3, :c [[1 0] [1 1]]},
+                                                    [1 0] {:v 7, :c [[2 0] [2 1]]}, [1 1] {:v 4, :c [[2 1] [2 2]]},
+                                                    [2 0] {:v 2, :c [[3 0] [3 1]]},  [2 1] {:v 10, :c [[3 1] [3 2]]},   [2 2] {:v 6, :c [[3 2] [3 3]]}
+                                                    [3 0] {:v 8, :c []},  [3 1] {:v 5, :c []},  [3 2] {:v 9, :c [] }, [3 3] {:v 3, :c [] }})
   )
