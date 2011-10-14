@@ -164,8 +164,6 @@
                                                     [3 0] {:v 8, :c []},  [3 1] {:v 5, :c []},  [3 2] {:v 9, :c [] }, [3 3] {:v 3, :c [] }})
   )
 
-(def map-euler-18-simple (construct-tree [3 7 4 2 10 6 8 5 9 3]))
-
 ; Now i can integrate the sequence into a triangle
 (def seq-euler-18 [75
                    95 64
@@ -184,29 +182,46 @@
                    4 62 98 27 23 9 70 98 73 93 38 53 60 4 23])
 (def map-euler-18 (construct-tree seq-euler-18))
 
-#_(defn walk-tree "Walk through the map"
-  [m p]
-  (loop [acc [] curr p]
-    (if (= [] (m curr))
-      acc
-      (recur (conj ))
-      ))
-  )
-; to walk on the tree
-#_(walk/postwalk-demo map-euler-18)
-#_(walk/prewalk-demo map-euler-18)
-#_(walk/walk println identity map-euler-18)
 
-(defn val-tree "Retrieve the value of the map t with the key coord"
+(defn tval "Retrieve the value of the map t with the key coord"
   [tree-map coord]
   ((tree-map coord) :v)
   )
 
-;.;. The right word may be effective, but no word was ever as effective as
-;.;. a rightly timed pause. -- Twain
-(fact
-  (val-tree map-euler-18 [0 0]) => 75
-  (val-tree map-euler-18 [1 0]) => 95
-  (val-tree map-euler-18 [14 14]) => 23
+(fact "test thats the maps is correctly built"
+  (tval map-euler-18 [0 0]) => 75
+  (tval map-euler-18 [1 0]) => 95
+  (tval map-euler-18 [14 14]) => 23
   )
+
+(defn tchildren "Given a map and coordinates, give the children for the node with coord"
+  [tree-map coord]
+  ((tree-map coord) :c)
+  )
+
+;.;. A clean boundary between useful abstractions and the grubby code that
+;.;. touches the real world is always a good thing. -- Ron Jeffries
+(fact "Check that given a map and coordinates, i find the children of the node"
+  (tchildren map-euler-18 [0 0]) => [[1 0] [1 1]]
+  (tchildren map-euler-18 [1 0]) => [[2 0] [2 1]]
+  (tchildren map-euler-18 [14 14]) => []
+  )
+
+(def map-euler-18-simple (construct-tree [3 7 4 2 10 6 8 5 9 3]))
+
+(defn walk-tree "Walk through the map"
+  [m]
+  (let [first-v ((m [0 0]) :v)
+        first-child-v ((m [0 0]) :c)]
+    [first-v first-child-v])
+  )
+
+(fact
+  (walk-tree map-euler-18-simple) => 3
+  )
+
+; to walk on the tree
+#_(walk/postwalk-demo map-euler-18)
+#_(walk/prewalk-demo map-euler-18)
+#_(walk/walk println identity map-euler-18)
 
