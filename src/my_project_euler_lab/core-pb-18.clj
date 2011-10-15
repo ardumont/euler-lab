@@ -207,16 +207,14 @@
 
 (defn walk-tree "Walk through the map"
   ([m]
-      (if (zero? (count m))
-        nil
-        (walk-tree m [0 0])))
+     (if (zero? (count m))
+       []
+       (walk-tree m [0 0])))
   ([m coord]
-      (let [tvalue ((m coord) :v)
-            tchildren (sort ((m coord) :c))]
-        (do
-          (println tvalue)
-          (map #(walk-tree m %) tchildren)
-          )))
+     (let [val ((m coord) :v)
+           vchild (sort ((m coord) :c))]
+#_       (println coord "=> :v" val ":c" vchild)
+       (concat [val] (mapcat (fn [coordinates] (walk-tree m coordinates)) vchild))))
   )
 
 ;    3
@@ -225,27 +223,9 @@
 ; 8 5  9 3
 (def map-euler-18-simple (construct-tree [3 7 4 2 10 6 8 5 9 3]))
 
-;.;. 3
-;.;. 7
-;.;. 4
-;.;. 2
-;.;. 10
-;.;. 8
-;.;. 5
-;.;. 5
-;.;. 9
-;.;. 10
-;.;. 6
-;.;. 5
-;.;. 9
-;.;. 9
-;.;. 3
-;.;. 
-;.;. FAIL at (NO_SOURCE_FILE:1)
-;.;.     Expected: nil
-;.;.       Actual: (((() ()) (() ())) ((() ()) (() ())))
+;.;. If this isn't nice, I don't know what is. -- Vonnegut
 (fact
-  (walk-tree map-euler-18-simple) => nil
+  (walk-tree map-euler-18-simple) => '(3 7 2 8 5 10 5 9 4 10 5 9 6 9 3)
   )
 
 ; to walk on the tree
