@@ -134,15 +134,16 @@
            curr 0]
       (if (= curr count-s)
         map-tree
-        (let [coord (coord-from-pos curr)]
+        (let [coord (coord-from-pos curr)
+              fst (first my-seq)]
           (if (< 0 (- (count my-seq) depth-s))
             (let [x (inc (coord 0))
                   y (coord 1)]
               (recur (rest my-seq)
-                     (assoc map-tree coord {:v (first my-seq), :c [[x y] [x (inc y)]]})
+                     (assoc map-tree coord {:v fst, :c [[x y] [x (inc y)]], :s fst})
                      (inc curr)))
             (recur (rest my-seq)
-                   (assoc map-tree coord {:v (first my-seq), :c []})
+                   (assoc map-tree coord {:v fst, :c [], :s fst})
                    (inc curr))
             ))))))
 
@@ -152,17 +153,17 @@
 ; 8 5 9 3  [3 0][3 1][3 2][3 3]   6 7 8 9           4
 
 (fact
-  (construct-tree [3]) => {[0 0] {:v 3 :c []}}
-  (construct-tree [3 7 4]) => { [0 0] {:v 3, :c [[1 0] [1 1]]},
-                                [1 0] {:v 7, :c []}, [1 1] {:v 4, :c []}}
-  (sort (construct-tree [3 7 4 2 10 6])) => (sort { [0 0] {:v 3, :c [[1 0] [1 1]]},
-                                                     [1 0] {:v 7, :c [[2 0] [2 1]]}, [1 1] {:v 4, :c [[2 1] [2 2]]},
-                                                     [2 0] {:v 2, :c []},  [2 1] {:v 10, :c []},   [2 2] {:v 6, :c []}})
-  (sort (construct-tree [3 7 4 2 10 6 8 5 9 3])) => (sort { [0 0] {:v 3, :c [[1 0] [1 1]]},
-                                                    [1 0] {:v 7, :c [[2 0] [2 1]]}, [1 1] {:v 4, :c [[2 1] [2 2]]},
-                                                    [2 0] {:v 2, :c [[3 0] [3 1]]},  [2 1] {:v 10, :c [[3 1] [3 2]]},   [2 2] {:v 6, :c [[3 2] [3 3]]}
-                                                    [3 0] {:v 8, :c []},  [3 1] {:v 5, :c []},  [3 2] {:v 9, :c [] }, [3 3] {:v 3, :c [] }})
-  )
+  (construct-tree [3]) => (contains {[0 0] {:v 3 :c [] :s 3}} :in-any-order)
+  (construct-tree [3 7 4]) => (contains { [0 0] {:v 3, :c [[1 0] [1 1]] :s 3},
+                                          [1 0] {:v 7, :c [] :s 7}, [1 1] {:v 4, :c [] :s 4}} :in-any-order)
+  (construct-tree [3 7 4 2 10 6]) => (contains { [0 0] {:v 3, :c [[1 0] [1 1]], :s 3},
+                                                 [1 0] {:v 7, :c [[2 0] [2 1]], :s 7}, [1 1] {:v 4, :c [[2 1] [2 2]], :s 4},
+                                                 [2 0] {:v 2, :c [], :s 2},  [2 1] {:v 10, :c [], :s 10},   [2 2] {:v 6, :c [], :s 6}} :in-any-order)
+  (construct-tree [3 7 4 2 10 6 8 5 9 3]) => (contains { [0 0] {:v 3, :c [[1 0] [1 1]], :s 3},
+                                                         [1 0] {:v 7, :c [[2 0] [2 1]], :s 7}, [1 1] {:v 4, :c [[2 1] [2 2]], :s 4},
+                                                         [2 0] {:v 2, :c [[3 0] [3 1]], :s 2},  [2 1] {:v 10, :c [[3 1] [3 2]], :s 10},   [2 2] {:v 6, :c [[3 2] [3 3]], :s 6}
+                                                         [3 0] {:v 8, :c [], :s 8},  [3 1] {:v 5, :c [], :s 5},  [3 2] {:v 9, :c [], :s 9}, [3 3] {:v 3, :c [] , :s 3}} :in-any-order :gaps-ok)
+)
 
 ; Now i can integrate the sequence into a triangle
 (def seq-euler-18 [75
@@ -180,8 +181,8 @@
                    91 71 52 38 17 14 91 43 58 50 27 29 48
                    63 66 4 68 89 53 67 30 73 16 69 87 40 31
                    4 62 98 27 23 9 70 98 73 93 38 53 60 4 23])
-(def map-euler-18 (construct-tree seq-euler-18))
 
+(def map-euler-18 (construct-tree seq-euler-18))
 
 (defn tval "Retrieve the value of the map t with the key coord"
   [tree-map coord]
@@ -223,13 +224,51 @@
 ; 8 5  9 3
 (def map-euler-18-simple (construct-tree [3 7 4 2 10 6 8 5 9 3]))
 
-;.;. If this isn't nice, I don't know what is. -- Vonnegut
 (fact
   (walk-tree map-euler-18-simple) => '(3 7 2 8 5 10 5 9 4 10 5 9 6 9 3)
   )
 
-; to walk on the tree
+; try to use the already existing method to do the same
+
 #_(walk/postwalk-demo map-euler-18)
 #_(walk/prewalk-demo map-euler-18)
 #_(walk/walk println identity map-euler-18)
 
+; #fail
+
+(defn walk-tree-max "Find the routes with the highest sum."
+  ( [m]
+      (if (zero? (count m))
+        0
+        (walk-tree-max m [0 0])))
+  ([m coord]
+     (let [val ((m coord) :v)
+           vchild ((m coord) :c)
+           sum-max ((m coord) :s)]
+;       (println coord "=> :v" val ":c" vchild ":s" sum-max)
+       (if (zero? (count vchild))
+         sum-max
+         (let [coord-1 (first vchild)
+               coord-2 (last vchild)
+               val-1 ((m coord-1) :v)
+               val-2 ((m coord-2) :v)
+               chi-1 ((m coord-1) :c)
+               chi-2 ((m coord-2) :c)
+               ]
+           (if (< val-1 val-2)
+             (let [upd-m (assoc m coord-2 {:v val-2 :c chi-2 :s (+ val-2 sum-max)} )]
+                 (walk-tree-max upd-m coord-2))
+             (let [upd-m (assoc m coord-1 {:v val-1 :c chi-1 :s (+ val-1 sum-max)} )]
+                 (walk-tree-max upd-m coord-1))
+               ))))))
+
+(def map-euler-18-simple-2 (construct-tree [3 7 4 2 4 6 8 5 9 3]))
+
+;.;. Effort only fully releases its reward after a person refuses to
+;.;. quit. -- Hill
+(fact
+  (walk-tree-max {}) => 0
+  (walk-tree-max {[0 0] {:v 10 :c [] :s 10}}) => 10
+  (walk-tree-max map-euler-18-simple) => 29
+  (walk-tree-max map-euler-18-simple-2) => 23
+  )
