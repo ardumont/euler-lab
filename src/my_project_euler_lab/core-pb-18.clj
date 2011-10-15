@@ -199,25 +199,53 @@
   ((tree-map coord) :c)
   )
 
-;.;. A clean boundary between useful abstractions and the grubby code that
-;.;. touches the real world is always a good thing. -- Ron Jeffries
 (fact "Check that given a map and coordinates, i find the children of the node"
   (tchildren map-euler-18 [0 0]) => [[1 0] [1 1]]
   (tchildren map-euler-18 [1 0]) => [[2 0] [2 1]]
   (tchildren map-euler-18 [14 14]) => []
   )
 
-(def map-euler-18-simple (construct-tree [3 7 4 2 10 6 8 5 9 3]))
-
 (defn walk-tree "Walk through the map"
-  [m]
-  (let [first-v ((m [0 0]) :v)
-        first-child-v ((m [0 0]) :c)]
-    [first-v first-child-v])
+  ([m]
+      (if (zero? (count m))
+        nil
+        (walk-tree m [0 0])))
+  ([m coord]
+      (let [tvalue ((m coord) :v)
+            tchildren (sort ((m coord) :c))]
+        (do
+          (println tvalue)
+          (map #(walk-tree m %) tchildren)
+          )))
   )
 
+;    3
+;   7 4
+;  2 10 6
+; 8 5  9 3
+(def map-euler-18-simple (construct-tree [3 7 4 2 10 6 8 5 9 3]))
+
+;.;. 3
+;.;. 7
+;.;. 4
+;.;. 2
+;.;. 10
+;.;. 8
+;.;. 5
+;.;. 5
+;.;. 9
+;.;. 10
+;.;. 6
+;.;. 5
+;.;. 9
+;.;. 9
+;.;. 3
+;.;. 
+;.;. FAIL at (NO_SOURCE_FILE:1)
+;.;.     Expected: nil
+;.;.       Actual: (((() ()) (() ())) ((() ()) (() ())))
 (fact
-  (walk-tree map-euler-18-simple) => 3
+  (walk-tree map-euler-18-simple) => nil
   )
 
 ; to walk on the tree
