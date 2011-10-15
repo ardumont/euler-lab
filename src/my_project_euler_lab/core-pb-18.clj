@@ -165,25 +165,6 @@
                                                          [3 0] {:v 8, :c [], :s 8},  [3 1] {:v 5, :c [], :s 5},  [3 2] {:v 9, :c [], :s 9}, [3 3] {:v 3, :c [] , :s 3}} :in-any-order :gaps-ok)
 )
 
-; Now i can integrate the sequence into a triangle
-(def seq-euler-18 [75
-                   95 64
-                   17 47 82
-                   18 35 87 10
-                   20 4 82 47 65
-                   19 1 23 75 3 34
-                   88 2 77 73 7 63 67
-                   99 65 4 28 6 16 70 92
-                   41 41 26 56 83 40 80 70 33
-                   41 48 72 33 47 32 37 16 94 29
-                   53 71 44 65 25 43 91 52 97 51 14
-                   70 11 33 28 77 73 17 78 39 68 17 57
-                   91 71 52 38 17 14 91 43 58 50 27 29 48
-                   63 66 4 68 89 53 67 30 73 16 69 87 40 31
-                   4 62 98 27 23 9 70 98 73 93 38 53 60 4 23])
-
-(def map-euler-18 (construct-tree seq-euler-18))
-
 (defn tval "Retrieve the value of the map t with the key coord"
   [tree-map coord]
   ((tree-map coord) :v)
@@ -228,6 +209,25 @@
   (walk-tree map-euler-18-simple) => '(3 7 2 8 5 10 5 9 4 10 5 9 6 9 3)
   )
 
+; Now i can integrate the sequence into a triangle
+(def seq-euler-18 [75
+                   95 64
+                   17 47 82
+                   18 35 87 10
+                   20 4 82 47 65
+                   19 1 23 75 3 34
+                   88 2 77 73 7 63 67
+                   99 65 4 28 6 16 70 92
+                   41 41 26 56 83 40 80 70 33
+                   41 48 72 33 47 32 37 16 94 29
+                   53 71 44 65 25 43 91 52 97 51 14
+                   70 11 33 28 77 73 17 78 39 68 17 57
+                   91 71 52 38 17 14 91 43 58 50 27 29 48
+                   63 66 4 68 89 53 67 30 73 16 69 87 40 31
+                   4 62 98 27 23 9 70 98 73 93 38 53 60 4 23])
+
+(def map-euler-18 (construct-tree seq-euler-18))
+
 ; try to use the already existing method to do the same
 
 #_(walk/postwalk-demo map-euler-18)
@@ -236,11 +236,11 @@
 
 ; #fail
 
-(defn walk-tree-max "Find the routes with the highest sum."
+(defn walk-tree-max-0 "Find the routes with the highest sum."
   ( [m]
       (if (zero? (count m))
         0
-        (walk-tree-max m [0 0])))
+        (walk-tree-max-0 m [0 0])))
   ([m coord]
      (let [val ((m coord) :v)
            vchild ((m coord) :c)
@@ -257,18 +257,54 @@
                ]
            (if (< val-1 val-2)
              (let [upd-m (assoc m coord-2 {:v val-2 :c chi-2 :s (+ val-2 sum-max)} )]
-                 (walk-tree-max upd-m coord-2))
+                 (walk-tree-max-0 upd-m coord-2))
              (let [upd-m (assoc m coord-1 {:v val-1 :c chi-1 :s (+ val-1 sum-max)} )]
-                 (walk-tree-max upd-m coord-1))
+                 (walk-tree-max-0 upd-m coord-1))
                ))))))
 
 (def map-euler-18-simple-2 (construct-tree [3 7 4 2 4 6 8 5 9 3]))
 
-;.;. Effort only fully releases its reward after a person refuses to
-;.;. quit. -- Hill
 (fact
-  (walk-tree-max {}) => 0
-  (walk-tree-max {[0 0] {:v 10 :c [] :s 10}}) => 10
-  (walk-tree-max map-euler-18-simple) => 29
-  (walk-tree-max map-euler-18-simple-2) => 23
+  (walk-tree-max-0 {}) => 0
+  (walk-tree-max-0 {[0 0] {:v 10 :c [] :s 10}}) => 10
+  (walk-tree-max-0 map-euler-18-simple) => 29
+  (walk-tree-max-0 map-euler-18-simple-2) => 23
+  )
+
+;# fail -> too naive -> i must trip through all the nodes of the tree
+
+(defn walk-tree-euler-18 "Find the routes with the highest sum."
+  ( [m]
+      (if (zero? (count m))
+        0
+        (walk-tree-euler-18 m [0 0])))
+  ([m coord]
+     (let [val ((m coord) :v)
+           vchild ((m coord) :c)
+           sum-max ((m coord) :s)]
+       #_       (println coord "=> :v" val ":c" vchild ":s" sum-max)       
+       (concat [sum-max]
+               (mapcat (fn [coordinates]
+                         (let [val-1 ((m coordinates) :v)
+                               chi-1 ((m coordinates) :c)]
+                           (let [upd-m (assoc m coordinates {:v val-1 :c chi-1 :s (+ val-1 sum-max)} )]
+                             (walk-tree-euler-18 upd-m coordinates)))
+                         )
+                       vchild)))))
+
+(fact
+  (walk-tree-euler-18 map-euler-18-simple-2) =>  '(3 10 12 20 17 14 19 23 7 11 16 20 13 22 16))
+
+(defn walk-tree-max-1 "Compute the max sum of the tree"
+  [m]
+  (let [v-sums-max (walk-tree-euler-18 m)]
+    (reduce max v-sums-max)
+    ))
+
+;.;. Out of clutter find simplicity; from discord find harmony; in the
+;.;.                               ; middle of difficulty lies
+;.;.                               ; opportunity. -- Einstein
+(fact
+  (walk-tree-max-1 map-euler-18-simple-2) =>  23
+  (walk-tree-max-1 map-euler-18) =>  1074
   )
