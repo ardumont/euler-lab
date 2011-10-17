@@ -109,13 +109,17 @@
   (cond
    (zero? n) "infinity"
    (= 1 n) [n]
+   (= 2 n) [1 2]
    :else
    (sort (distinct (map #(gcd n %) (range 2 (inc n)))))))
 
-;.;. For every disciplined effort, there is a multiple reward. -- Rohn
+;.;. Any intelligent fool can make things bigger, more complex, and more
+;.;. violent. It takes a touch of genius -- and a lot of courage -- to move
+;.;. in the opposite direction. -- Schumacher
 (fact
   (all-divisors 0) => "infinity"
   (all-divisors 1) => [1]
+  (all-divisors 2) => [1 2]
   (all-divisors 10) => [1 2 5 10]
   (all-divisors 15) => [1 3 5 15]
   (all-divisors 21) => [1 3 7 21]
@@ -161,9 +165,6 @@
            (recur (conj acc-divisors divisor-prime) acc-div-primes (/ num divisor-prime))
            (recur acc-divisors (rest acc-div-primes) num)))))))
 
-;.;. FAIL at (NO_SOURCE_FILE:1)
-;.;.     Expected: [2 4 7 14 28]
-;.;.       Actual: [2 2 7]
 (fact
  (all-divisors-with-dec-prime [] 1) => []
  (all-divisors-with-dec-prime [] 0) => []
