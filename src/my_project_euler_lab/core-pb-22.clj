@@ -125,7 +125,5 @@
   (vec-to-map ["toto" "theo" "foo"]) => {"toto" 1 "theo" 2 "foo" 3}
   )
 
-;.;. FAIL at (NO_SOURCE_FILE:1)
-;.;.     Expected: 0
-;.;.       Actual: 871198282
+;.;. Simplicity, carried to the extreme, becomes elegance. -- Jon Franklin
 (fact (sum-all-number-from-sorted-list (vec-to-map v-ordered-words)) => 871198282)
