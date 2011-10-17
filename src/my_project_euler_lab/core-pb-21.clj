@@ -17,20 +17,27 @@
 
 (defn all-divisors-bl "Retrieve all the divisors except the last one (which is the numbers that starts all)"
   [num]
-  (butlast (all-divisors num))
+  (if (= 1 num)
+    []
+    (butlast (all-divisors num)))
   )
 
-(fact (all-divisors-bl 10) => [1 2 5])
+(fact
+  (all-divisors-bl 10) => [1 2 5]
+  (all-divisors-bl 1) => []
+  (all-divisors-bl 2) => [1]
+)
 
 (defn amicable? "Heart of the problem - determine if a number is amicable or not"
   [num]
-  (let [nb-divisors (all-divisors-bl num)
-        sum-divisors (reduce + nb-divisors)
-        nb-divisors-sum (reduce + (all-divisors-bl sum-divisors))]
-#_    (println "num" num "nb-divisors" nb-divisors "sum-divisors" sum-divisors "nb-divisors" nb-divisors)
-    (and (not= num sum-divisors) (= num nb-divisors-sum))
-    )
-  )
+  (if (= 1 num)
+    false
+    (let [nb-divisors (all-divisors-bl num)
+          sum-divisors (reduce + nb-divisors)
+          nb-divisors-sum (reduce + (all-divisors-bl sum-divisors))]
+      #_    (println "num" num "nb-divisors" nb-divisors "sum-divisors" sum-divisors "nb-divisors" nb-divisors)
+      (and (not= num sum-divisors) (= num nb-divisors-sum))
+      )))
 
 (fact "Check the amicable? method returns correct number"
   ; mock test
@@ -38,6 +45,7 @@
   (provided
     (all-divisors-bl 10) => [1 3]
     (all-divisors-bl 4) =>  [1 4 5])
+  (amicable? 1) => false
   (amicable? 10) => false
   (amicable? 284) => true
   (amicable? 220) => true
@@ -52,12 +60,8 @@
                    (range 1 (inc borne)))))
   )
 
-;.;. FAIL at (NO_SOURCE_FILE:1)
-;.;.     Expected: []
-;.;.       Actual: java.lang.RuntimeException: java.lang.RuntimeException: java.lang.RuntimeException: java.lang.ClassCastException: java.lang.Character cannot be cast to java.lang.Number
-;.;.               my_project_euler_lab.core_pb_21$eval7851$fn__7852.invoke(NO_SOURCE_FILE:1)
-;.;.               my_project_euler_lab.core_pb_21$eval7851.invoke(NO_SOURCE_FILE:1)
-;.;.               my_project_euler_lab.core_pb_21$eval7847.invoke(NO_SOURCE_FILE)
+;.;. A clean boundary between useful abstractions and the grubby code that
+;.;. touches the real world is always a good thing. -- Ron Jeffries
 (fact "Check the amicable numbers generating sequence."
   ; mock test top-down tdd
   (amicable-numbers-under 5) => [1 2 4 5]
@@ -69,7 +73,9 @@
     (amicable? 5) => true)
   ; limit use case
   (amicable-numbers-under -1) => []
-;  (amicable-numbers-under 10) => []
+  (amicable-numbers-under 10) => []
+  (amicable-numbers-under 1000) => [220 284]
+  (amicable-numbers-under 10000) => [220 284]
   )
 
 (defn sum-amicable-numbers "Compute the sum of amicable numbles given an interval"
@@ -80,4 +86,6 @@
 (fact "Check that the sum of amicable numbers for an interval is ok."
   (sum-amicable-numbers 10000) => 504
   (provided (amicable-numbers-under 10000) => [220 284])
+  (sum-amicable-numbers 10000) => 31626
   )
+
