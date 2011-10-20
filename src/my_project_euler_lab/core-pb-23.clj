@@ -3,6 +3,7 @@
   (:use [midje.sweet])
   (:use [clojure.contrib.repl-utils :only [show]])
   (:use [clojure.set :only [difference]] )
+  (:use clojure.contrib.math)
   (:use [my-project-euler-lab.primes :only [all-divisors-bl]] )
   )
 
@@ -25,7 +26,21 @@
 
 ;Find the sum of all the positive integers which cannot be written as the sum of two abundant numbers.
 
-(unfinished all-dec-in-sums)
+(unfinished )
+
+(defn all-dec-in-sums "Find all the sums possibles that gives n with 2 integers"
+  [n]
+  (let [half-n (ceil (/ n 2))
+        integers-s (range 1 (inc half-n))]
+    (reduce conj #{}
+            (map
+             #(vec [% (- n %)])
+             integers-s))))
+
+(fact
+  (all-dec-in-sums 10) => #{[1 9] [2 8] [3 7] [4 6] [5 5]}
+  (all-dec-in-sums 11) => #{[6 5] [5 6] [4 7] [3 8] [2 9] [1 10]}
+  )
 
 (defn sum "Compute the sum of the vector of integers"
   [v]
@@ -82,8 +97,6 @@
     )
   )
 
-;.;. It takes time to succeed because success is merely the natural reward
-;.;. of taking time to do anything well. -- Ross
 (fact
   (perfect? 10) => true
   (provided
@@ -137,6 +150,10 @@
     (abundant? 9) => false)
   )
 
+; it test
+(fact
+    (sum-two-abundant? 240) => true)
+
 (defn integers-numbers "Compute the set of integers from 1 to n"
   [n]
     {:pre [(pos? n)]}
@@ -163,6 +180,10 @@
     )
   (abuntant-numbers -1) => (throws AssertionError)
   )
+
+; it test
+;.;. The reward of a thing well done is to have done it. -- Emerson
+(fact (abuntant-numbers 50) => #{32 36 38 40 42 44 48 50 24 30})
 
 (defn sum-all-positive-integer-euler-23 "Compute the sum of all positive integer which cannot be written as the sum of two abundant numbers in the interval 12 - n"
   [n]
