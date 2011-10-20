@@ -113,9 +113,6 @@
    :else
    (sort (distinct (map #(gcd n %) (range 2 (inc n)))))))
 
-;.;. Any intelligent fool can make things bigger, more complex, and more
-;.;. violent. It takes a touch of genius -- and a lot of courage -- to move
-;.;. in the opposite direction. -- Schumacher
 (fact
   (all-divisors 0) => "infinity"
   (all-divisors 1) => [1]
@@ -125,6 +122,23 @@
   (all-divisors 21) => [1 3 7 21]
   (all-divisors 28) => [1 2 4 7 14 28]
   (all-divisors 120) => [1 2 3 4 5 6 8 10 12 15 20 24 30 40 60 120]
+  )
+
+(defn all-divisors-bl "Compute all divisors of a number"
+  [n]
+  (butlast (all-divisors n))
+)
+
+;.;. The sum of wisdom is that time is never lost that is devoted to
+;.;. work. -- Emerson
+(fact
+  (all-divisors-bl 1) => nil
+  (all-divisors-bl 2) => [1]
+  (all-divisors-bl 10) => [1 2 5]
+  (all-divisors-bl 15) => [1 3 5]
+  (all-divisors-bl 21) => [1 3 7]
+  (all-divisors-bl 28) => [1 2 4 7 14]
+  (all-divisors-bl 120) => [1 2 3 4 5 6 8 10 12 15 20 24 30 40 60]
   )
 
 (defn count-divisors-with-dec-prime "Compute the number of divisors with the help of the decomposition in prime numbers."
