@@ -45,7 +45,6 @@
     )
   )
 
-;.;. The reward of a thing well done is to have done it. -- Emerson
 (fact
   (what-is? 10) => {:perfect true :abundant false :deficient false}
   (provided
@@ -71,6 +70,9 @@
   (deficient? 20) => false
   (provided
     (what-is? 20) => {:deficient false})
+  ; it test
+  (deficient? 10) => true
+  (deficient? 28) => false
   )
 
 (defn perfect? "Test if a mumber is a perfect number"
@@ -80,6 +82,8 @@
     )
   )
 
+;.;. It takes time to succeed because success is merely the natural reward
+;.;. of taking time to do anything well. -- Ross
 (fact
   (perfect? 10) => true
   (provided
@@ -87,6 +91,9 @@
   (perfect? 20) => false
   (provided
     (what-is? 20) => {:perfect false})
+  ; it test
+  (perfect? 10) => false
+  (perfect? 28) => true
   )
 
 (defn abundant? "Test if a number is abundant (sums of its divisors is superior to itself)"
@@ -103,6 +110,9 @@
   (abundant? 20) => false
   (provided
     (what-is? 20) => {:abundant false})
+  ; it test
+  (abundant? 10) => false
+  (abundant? 120) => true
   )
 
 (defn sum-two-abundant? "Can the number be a sum of 2 abundants numbers?"
