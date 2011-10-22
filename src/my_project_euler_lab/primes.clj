@@ -145,8 +145,6 @@
          (recur (conj acc num (/ n num)) (dec num)) 
          (recur acc (dec num)))))))
 
-;.;. Before the reward there must be labor. You plant before you
-;.;. harvest. You sow in tears before you reap joy. -- Ransom
 (fact
   (all-divisors-bi 0) => "infinity"
   (all-divisors-bi 1) => nil
@@ -186,24 +184,28 @@
 (defn all-divisors-with-dec-prime "Compute the divisors with the help of the decomposition in prime numbers."
   [primes n]
   (cond
-   (<= n 1) [];principles -> infinity
+   (<= n 1) #{}
    :else
-   (loop [acc-divisors [], acc-div-primes primes, num n]
+   (loop [acc-divisors #{}
+          acc-div-primes primes
+          num n]
      (if (= 1 num)
        acc-divisors
        (let [divisor-prime (first acc-div-primes)
-             divisor-n (/ num divisor-prime)
-             ]
+             divisor-n (/ num divisor-prime)]
          (if (zero? (rem num divisor-prime))
            (recur (conj acc-divisors divisor-prime divisor-n) acc-div-primes divisor-n)
            (recur acc-divisors (rest acc-div-primes) num)))))))
 
+;.;. FAIL at (NO_SOURCE_FILE:1)
+;.;.     Expected: #{1 2 4 7 14}
+;.;.       Actual: #{1 2 7 14}
 (fact "Finish the implem all the divisors with the decomposition in prime number"
- (all-divisors-with-dec-prime [] 1) => []
- (all-divisors-with-dec-prime [] 0) => []
- (all-divisors-with-dec-prime little-primes 10) => [2 5]
- (all-divisors-with-dec-prime little-primes 15) => [3 5]
- (all-divisors-with-dec-prime little-primes 21) => [3 7]
- (all-divisors-with-dec-prime little-primes 28) => [2 4 7 14 28]
-; (all-divisors-with-dec-prime (take 20 (lazy-primes)) 120) => [1 2 3 4 5 6 8 10 12 15 20 24 30 40 60 120]
+ (all-divisors-with-dec-prime [] 0) => #{}
+ (all-divisors-with-dec-prime [] 1) => #{}
+ (all-divisors-with-dec-prime little-primes 10) => #{1 2 5}
+ (all-divisors-with-dec-prime little-primes 15) => #{1 3 5}
+ (all-divisors-with-dec-prime little-primes 21) => #{1 3 7}
+ (all-divisors-with-dec-prime little-primes 28) => #{1 2 4 7 14}
+; (all-divisors-with-dec-prime (take 20 (lazy-primes)) 120) => #{1 2 3 4 5 6 8 10 12 15 20 24 30 40 60}
  )
