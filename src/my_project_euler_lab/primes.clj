@@ -200,7 +200,7 @@
 ;.;. FAIL at (NO_SOURCE_FILE:1)
 ;.;.     Expected: #{1 2 4 7 14}
 ;.;.       Actual: #{1 2 7 14}
-(fact "Finish the implem all the divisors with the decomposition in prime number"
+(future-fact "Finish the implem all the divisors with the decomposition in prime number"
  (all-divisors-with-dec-prime [] 0) => #{}
  (all-divisors-with-dec-prime [] 1) => #{}
  (all-divisors-with-dec-prime little-primes 10) => #{1 2 5}
