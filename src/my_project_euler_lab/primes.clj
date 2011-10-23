@@ -145,6 +145,7 @@
          (recur (conj acc num (/ n num)) (dec num)) 
          (recur acc (dec num)))))))
 
+;.;. The work itself praises the master. -- CPE Bach
 (fact
   (all-divisors-bi 0) => "infinity"
   (all-divisors-bi 1) => nil
@@ -197,9 +198,6 @@
            (recur (conj acc-divisors divisor-prime divisor-n) acc-div-primes divisor-n)
            (recur acc-divisors (rest acc-div-primes) num)))))))
 
-;.;. FAIL at (NO_SOURCE_FILE:1)
-;.;.     Expected: #{1 2 4 7 14}
-;.;.       Actual: #{1 2 7 14}
 (future-fact "Finish the implem all the divisors with the decomposition in prime number"
  (all-divisors-with-dec-prime [] 0) => #{}
  (all-divisors-with-dec-prime [] 1) => #{}
@@ -209,3 +207,5 @@
  (all-divisors-with-dec-prime little-primes 28) => #{1 2 4 7 14}
 ; (all-divisors-with-dec-prime (take 20 (lazy-primes)) 120) => #{1 2 3 4 5 6 8 10 12 15 20 24 30 40 60}
  )
+
+(println "--------- END OF PRIMES ----------" (java.util.Date.))
