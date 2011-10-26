@@ -155,12 +155,10 @@
             acc
             (if (or (acc fst) (not (sum-2-abundants-wm? m-abundant fst)))
               (recur acc (rest s-integers))
-              (recur (union acc (double-til-limit fst n)) (rest s-integers))
-              )))))))
+              (recur (union acc (double-til-limit fst n)) (rest s-integers)))))))))
 
-;(def m-abundant (map-abundants 28123))
-
-;.;. Without work, all life goes rotten. -- Camus
+;.;. The highest reward for a man's toil is not what he gets for it but
+;.;. what he becomes by it. -- Ruskin
 (fact "sum-2-abundants-numbers - new way"
   (sum-2-abundants-numbers-nw (map-abundants 50) 50) => (just #{32 36 38 40 42 44 48 50 24 30}, :in-any-order)
   (sum-2-abundants-numbers-nw (map-abundants 100) 100) => (just #{24 30 32 36 38 40 42 44 48 50 52 54 56 58 60 62 64 66 68 70 72 74 76 78 80 82 84 86 88 90 92 94 96 98 100} :in-any-order)
@@ -174,7 +172,8 @@
         sum-abundants (reduce + (sum-2-abundants-numbers-nw m-abundants n))]
     (- sum-integers sum-abundants)))
 
-#_(fact (sum-all-positive-integer-euler-23-nw 28123) => 4179871)
+(future-fact "Need to understand the difference of 945 someday"
+             (sum-all-positive-integer-euler-23-nw 28123) => 4179871)
 
 (println "--------- END OF PB 23-1 ----------" (java.util.Date.))
 
