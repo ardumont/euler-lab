@@ -20,26 +20,56 @@
 ; solution
 ; there are 10! solutions; 3628800.
 
+(unfinished)
+
 (def work-vector [0 1 2 3 4 5 6 7 8 9])
 
-(defn permut "Compute all the possible permutations a the given vector"
+(defn circular-permut "Make a circular permutation from a vector."
+  [v]
+  (conj
+   (subvec v 1 (count v)) (first v) ))
+
+(fact "Test the circular permutation"
+  (circular-permut [0 1 2]) => [1 2 0]
+  (circular-permut [0 1 2]) => vector?
+  (circular-permut [1 2 0]) => [2 0 1]
+  (circular-permut [2 0 1]) => [0 1 2]
+  (circular-permut [2 0 1 9]) => [0 1 9 2])
+
+(defn all-circular-permut "Compute all circular permutations of a vector."
+  [v]
+  (loop [curr (dec (count v)) acc [v]]
+    (if (zero? curr)
+      acc
+      (recur (dec curr) (conj acc (circular-permut (last acc)))))))
+
+(fact "Mock - Compute all circular permutations of a vector"
+  (all-circular-permut [0 1 2]) => [[0 1 2] [1 2 0] [2 0 1]]
+  (provided
+    (circular-permut [0 1 2]) => [1 2 0]
+    (circular-permut [1 2 0]) => [2 0 1]))
+
+(fact "ITest - Compute all circular permutations of a vector"
+  (all-circular-permut [0 1 2]) => [[0 1 2] [1 2 0] [2 0 1]]
+  (all-circular-permut [0 1 2]) => vector?
+  (all-circular-permut [0 1 2 3]) => [[0 1 2 3] [1 2 3 0] [2 3 0 1] [3 0 1 2]])
+
+(defn permut "Compute all the permutations possibles from a vector."
   [v]
   (let [count-v (count v)]
-    (cond (<= count-v 1) v
-          (= 2 count-v) [v [(second v) (first v)]]
-          (= 3 count-v) (concat  (map #(concat [(nth v 0)] %) (permut [(nth v 1) (nth v 2)]))
-                                 (map #(concat [(nth v 1)] %) (permut [(nth v 2) (nth v 0)]))
-                                 (map #(concat [(nth v 2)] %) (permut [(nth v 0) (nth v 1)])))
-          :else v)))
+    (cond (<= count-v 1) v                         ; nothing to do
+          (= 2 count-v) [v [(second v) (first v)]] ; only 2 permutations
+          :else
+          (reduce concat
+                  (map (fn [vec-circular-permut]
+                         (map #(concat [(first vec-circular-permut)] %) (permut (rest vec-circular-permut))))
+                       (all-circular-permut (vec v)))))))
 
-(fact
-  (permut [0 1]) => [[0 1] [1 0]])
-
-;.;. Any intelligent fool can make things bigger, more complex, and more
-;.;. violent. It takes a touch of genius -- and a lot of courage -- to move
-;.;. in the opposite direction. -- Schumacher
-(fact
+(fact "Itest - Test a permutation generation from a vector"
   (permut [0 1 2]) => [[0 1 2] [0 2 1] [1 2 0] [1 0 2] [2 0 1] [2 1 0]])
 
+;.;. Achievement is its own reward. -- David Lynch
+(fact
+  (permut [0 1 2 3]) => ['(0 1 2 3) '(0 1 3 2) '(0 2 3 1) '(0 2 1 3) '(0 3 1 2) '(0 3 2 1) '(1 2 3 0) '(1 2 0 3) '(1 3 0 2) '(1 3 2 0) '(1 0 2 3) '(1 0 3 2) '(2 3 0 1) '(2 3 1 0) '(2 0 1 3) '(2 0 3 1) '(2 1 3 0) '(2 1 0 3) '(3 0 1 2) '(3 0 2 1) '(3 1 2 0) '(3 1 0 2) '(3 2 0 1) '(3 2 1 0)])
 
 (println "--------- END OF PB 24 ----------" (java.util.Date.))
