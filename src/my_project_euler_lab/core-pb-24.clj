@@ -58,18 +58,23 @@
   [v]
   (let [count-v (count v)]
     (cond (<= count-v 1) v                         ; nothing to do
-          (= 2 count-v) [v [(second v) (first v)]] ; only 2 permutations
+          (= 2 count-v) (let [[x y] v] [[x y] [y x]]) ; only 2 permutations
           :else
           (reduce concat
-                  (map (fn [vec-circular-permut]
-                         (map #(concat [(first vec-circular-permut)] %) (permut (rest vec-circular-permut))))
+                  (map (fn [v-circ-permut]
+                         (let [[fst & more] v-circ-permut]
+                              (map (fn [p] (concat [fst] p)) (permut more))))
                        (all-circular-permut (vec v)))))))
 
-(fact "Itest - Test a permutation generation from a vector"
-  (permut [0 1 2]) => [[0 1 2] [0 2 1] [1 2 0] [1 0 2] [2 0 1] [2 1 0]])
-
-;.;. Achievement is its own reward. -- David Lynch
-(fact
-  (permut [0 1 2 3]) => ['(0 1 2 3) '(0 1 3 2) '(0 2 3 1) '(0 2 1 3) '(0 3 1 2) '(0 3 2 1) '(1 2 3 0) '(1 2 0 3) '(1 3 0 2) '(1 3 2 0) '(1 0 2 3) '(1 0 3 2) '(2 3 0 1) '(2 3 1 0) '(2 0 1 3) '(2 0 3 1) '(2 1 3 0) '(2 1 0 3) '(3 0 1 2) '(3 0 2 1) '(3 1 2 0) '(3 1 0 2) '(3 2 0 1) '(3 2 1 0)])
+;.;. The biggest reward for a thing well done is to have done it. --
+;.;. Voltaire
+(fact "Itest - Test a permutation generation from a vector of number"
+  (permut [0 1]) => [[0 1] [1 0]]
+  (permut [0 1 2]) => [[0 1 2] [0 2 1] [1 2 0] [1 0 2] [2 0 1] [2 1 0]]
+  (permut [0 1 2 3]) => ['(0 1 2 3) '(0 1 3 2) '(0 2 3 1) '(0 2 1 3) '(0 3 1 2) '(0 3 2 1)
+                         '(1 2 3 0) '(1 2 0 3) '(1 3 0 2) '(1 3 2 0) '(1 0 2 3) '(1 0 3 2)
+                         '(2 3 0 1) '(2 3 1 0) '(2 0 1 3) '(2 0 3 1) '(2 1 3 0) '(2 1 0 3)
+                         '(3 0 1 2) '(3 0 2 1) '(3 1 2 0) '(3 1 0 2) '(3 2 0 1) '(3 2 1 0)])
 
 (println "--------- END OF PB 24 ----------" (java.util.Date.))
+
