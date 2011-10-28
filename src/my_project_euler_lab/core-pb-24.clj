@@ -92,7 +92,7 @@
     (last p)))
 
 (future-fact "The call to solve the problem 24."
- (find-rth-permut 1000000 [0 1 2 3 4 5 6 7 8 9]) => "2783915460")
+ (find-rth-permut 1000000 [0 1 2 3 4 5 6 7 8 9]) => "2783915460"); first time -> out of memory error ; second time: use of lazy-seq and bam, it worked!
 
 ; i need to sioux. 10! is too heavy in memory.
 ; I think along this line.
@@ -108,9 +108,8 @@
 ; to solve the problems and concatenate a 2 before this result to have
 ; the solution of the problem 24.
 
-;.;. FAIL at (NO_SOURCE_FILE:1)
-;.;.     Expected: "2783915604"
-;.;.       Actual: "2783915460"
+;.;. The sum of wisdom is that time is never lost that is devoted to
+;.;. work. -- Emerson
 (fact "The tweaked call to solve the problem 24."
   (str "2" (find-rth-permut 274240 [3 4 5 6 7 8 9 0 1])) => "2783915460")
 
