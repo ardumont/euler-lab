@@ -20,10 +20,16 @@
   )
 
 (defn count-digits-from-number "Count the number of digits in a number"
-  [n]
-  (if (< n 0)
-    0
-    (count (num-digits-into-vec n))))
+  [num]
+  (loop [n num sum 0]
+    (if (zero? n)
+      sum
+      (recur (quot n 10) (inc sum)))))
 
+;.;. Out of clutter find simplicity; from discord find harmony; in the
+;.;.                               ; middle of difficulty lies
+;.;.                               ; opportunity. -- Einstein
 (fact
-  (count-digits-from-number 1000000) => 7)
+  (count-digits-from-number 1000000) => 7
+  (count-digits-from-number 10715086071862673209484250490600018105614048117055336074437503883703510511249361224931983788156958581275946729175531468251871452856923140435984577574698574803934567774824230985421074605062371141877954182153046474983581941267398767559165543946077062914571196477686542167660429831652624386837205668069376) => 302
+  )
