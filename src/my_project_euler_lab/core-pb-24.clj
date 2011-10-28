@@ -1,10 +1,7 @@
 (ns my-project-euler-lab.core-pb-24
   (:use [clojure.test               :only [run-tests]])
   (:use [midje.sweet])
-  (:use [clojure.contrib.repl-utils :only [show]])
-  (:use [clojure.set :only [difference union]] )
-  (:use clojure.contrib.math)
-  (:use [my-project-euler-lab.combi]))
+  (:use [clojure.contrib.repl-utils :only [show]]))
 
 ;A permutation is an ordered arrangement of objects.
 ;For example, 3124 is one possible permutation of the digits 1, 2, 3 and 4.
@@ -17,12 +14,7 @@
 ;What is the millionth lexicographic permutation of the digits 0, 1,
 ;2, 3, 4, 5, 6, 7, 8 and 9?
 
-; solution
-; there are 10! solutions; 3628800.
-
 (unfinished)
-
-(def work-vector [0 1 2 3 4 5 6 7 8 9])
 
 (defn circular-permut "Make a circular permutation from a vector."
   [v]
