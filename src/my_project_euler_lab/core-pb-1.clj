@@ -14,8 +14,7 @@
 
 (defn nn-mult-3-5 "Return the list of the natural numbers multiple of 3 or 5 below n"
   [n]
-  (filter #(or (zero? (rem % 3)) (zero? (rem % 5))) (range 1 n)) 
-  )
+  (filter #(or (zero? (rem % 3)) (zero? (rem % 5))) (range 1 n)) )
 
 (fact (nn-mult-3-5 10) => [3 5 6 9])
 (fact (reduce + (nn-mult-3-5 10)) => 23)
@@ -24,3 +23,4 @@
 ;.;.                               ; opportunity. -- Einstein
 (fact (reduce + (nn-mult-3-5 1000)) => 233168)
 
+(println "--------- END OF PB 1 ----------" (java.util.Date.))
