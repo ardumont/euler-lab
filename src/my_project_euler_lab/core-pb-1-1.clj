@@ -29,7 +29,7 @@
 (defn sum-1-borne "Compute the sum from 1 to n"
   [n]
 ;  (reduce + (range 1 (inc n)))
-  (/ (* n (inc n)) 2))
+  (* n 1/2 (inc n)))
 
 (fact
   (sum-1-borne 10) => 55)
