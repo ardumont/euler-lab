@@ -15,28 +15,19 @@
 ;; not exceed four million, find the sum of the even-valued
 ;; terms.
 
-;; fibonacci simple
+(defn fibonacci-seq "Lazy-seq fibonacci"
+  []
+  ((fn fib-seq [a b]
+      (lazy-seq (cons a (fib-seq b (+ a b))))) 1 2))
 
-(defn fibonacci "Fibonacci suite"
-  [n]
-  (if (= n 1)
-    [1]
-    (if (= n 2)
-      [2 1]
-      (loop [current 3 fib [2 1]]
-      (if (> current n)
-        fib
-        (recur (inc current) (cons (+ (first fib) (second fib)) fib)))
-      )))
-  )
-
-;.;. Happiness is not a reward / it is a consequence. -- Ingersoll
+;.;. Happiness comes when you believe that you have done something truly
+;.;. meaningful. -- Yan
 (fact
-  (fibonacci 1) => [1]
-  (fibonacci 2) => [2 1]
-  (fibonacci 3) => [3 2 1]
-  (fibonacci 4) => [5 3 2 1]
-  (fibonacci 10) => [89 55 34 21 13 8 5 3 2 1])
+  (take 1 (fibonacci-seq)) => [1]
+  (take 2 (fibonacci-seq)) => [1 2]
+  (take 3 (fibonacci-seq)) => [1 2 3]
+  (take 4 (fibonacci-seq)) => [1 2 3 5]
+  (take 11 (fibonacci-seq)) => [1 2 3 5 8 13 21 34 55 89 144])
 
 ;; compute fibonacci
 
@@ -55,6 +46,6 @@
     ))
 
 ;; compute the sum of even number in the fibonacci suite up to 4000000
-(reduce + (filter #(zero? (rem % 2)) (fibonacci-borne 50 4000000)))
+;(reduce + (filter #(zero? (rem % 2)) (fibonacci-borne 50 4000000)))
 
 (println "--------- END OF PB 2 ----------" (java.util.Date.))
