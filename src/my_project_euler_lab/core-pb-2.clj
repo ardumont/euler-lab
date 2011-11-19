@@ -18,10 +18,8 @@
 (defn fibonacci-seq "Lazy-seq fibonacci"
   []
   ((fn fib-seq [a b]
-      (lazy-seq (cons a (fib-seq b (+ a b))))) 1 2))
+     (lazy-seq (cons a (fib-seq b (+ a b))))) 1 2))
 
-;.;. Happiness comes when you believe that you have done something truly
-;.;. meaningful. -- Yan
 (fact
   (take 1 (fibonacci-seq)) => [1]
   (take 2 (fibonacci-seq)) => [1 2]
@@ -29,23 +27,10 @@
   (take 4 (fibonacci-seq)) => [1 2 3 5]
   (take 11 (fibonacci-seq)) => [1 2 3 5 8 13 21 34 55 89 144])
 
-;; compute fibonacci
-
-(defn fibonacci-borne "Fibonacci suite"
-  [n borne]
-  (if (= n 1)
-    [1]
-    (if (= n 2)
-      [2 1]
-      (loop [current 3 fib [2 1]]
-        (let [sum (+ (first fib) (second fib))]
-          (if (or (> current n) (> sum borne))
-            fib
-            (recur (inc current) (cons sum fib)))
-          )))
-    ))
-
 ;; compute the sum of even number in the fibonacci suite up to 4000000
-;(reduce + (filter #(zero? (rem % 2)) (fibonacci-borne 50 4000000)))
+
+;.;. Good code is its own best documentation. -- Steve McConnell
+(fact
+  (reduce + (filter #(zero? (rem % 2)) (take 33 (fibonacci-seq)))) => 4613732)
 
 (println "--------- END OF PB 2 ----------" (java.util.Date.))
