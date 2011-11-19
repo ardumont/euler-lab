@@ -30,11 +30,13 @@
       )))
   )
 
-(fact (fibonacci 1) => [1])
-(fact (fibonacci 2) => [2 1])
-(fact (fibonacci 3) => [3 2 1])
-(fact (fibonacci 4) => [5 3 2 1])
-(fact (fibonacci 10) => [89 55 34 21 13 8 5 3 2 1])
+;.;. Happiness is not a reward / it is a consequence. -- Ingersoll
+(fact
+  (fibonacci 1) => [1]
+  (fibonacci 2) => [2 1]
+  (fibonacci 3) => [3 2 1]
+  (fibonacci 4) => [5 3 2 1]
+  (fibonacci 10) => [89 55 34 21 13 8 5 3 2 1])
 
 ;; compute fibonacci
 
@@ -55,11 +57,4 @@
 ;; compute the sum of even number in the fibonacci suite up to 4000000
 (reduce + (filter #(zero? (rem % 2)) (fibonacci-borne 50 4000000)))
 
-                                        ; denis implem
-
-;;compute the sum and the fibonacci simultaneously
-
-                                        ; other pist
-;;(take 32 (iterate #(cons (+ (first %) (second %)) %) [2 1]))
-
-      
+(println "--------- END OF PB 2 ----------" (java.util.Date.))
