@@ -6,13 +6,14 @@
   (:use [clojure.walk               :only [macroexpand-all]])
   (:use clojure.contrib.math))
 
-(defn factorial "Factorial"
+(defn factorial "Factorial method"
   [n]
   (if (zero? n)
     1
-    (* n (factorial (dec n))))
-)
+    (* n (factorial (dec n)))))
 
+;.;. Code you'd be proud to give your mom to show off on the fridge. --
+;.;. Mike Cohn
 (fact
   (factorial 1) => 1
   (factorial 2) => 2
@@ -20,8 +21,7 @@
   (factorial 4) => 24
   (factorial 5) => 120
   (factorial 6) => 720
-  (factorial 7) => 5040
-  )
+  (factorial 7) => 5040)
 
 (defn arrangement "Arrangement"
   [n k]
@@ -45,7 +45,6 @@
     (/ (factorial n) (* (factorial k) (factorial (- n k)))))
   )
 
-;.;. Hey! You're green! Refactor then we get to go red again! -- @zspencer
 (fact
   (combi 0 1) => 0
   (combi 0 0) => 1
