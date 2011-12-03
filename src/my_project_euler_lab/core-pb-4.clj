@@ -21,7 +21,8 @@
         (and (= (first seq) (last seq))
              (recur (butlast (rest seq)))))))
 
-;.;. There's a certain satisfaction in a little bit of pain. -- Madonna
+;.;. A journey of a thousand miles begins with a single step. --
+;.;. @alanmstokes
 (fact
   (pal? [1 2 3]) => falsey
   (pal? [1 2 3 4]) => falsey
@@ -33,26 +34,28 @@
   (pal? [\1 \2 \2 \2]) => falsey
   (pal? [1 2 3 2 1]) => truthy)
 
-(defn gen-all-mult "Product of all elements in the sequence 2x2."
-  [seq0]
+(defn gen-all-mult "Create the sequence of product from all the elements in the sequence 2x2. The product are filtered to not be above the limit."
+  [seq0 limit]
   (distinct
    (mapcat
     (fn [e] (map
-            (fn [s] (* s e))
+            (fn [s] (let [pdt (* s e)] (when (<= pdt limit) pdt)))
             seq0))
     seq0)))
 
 (fact
-  (gen-all-mult (range 1 11))
-  => (contains [10 20 30 40 50 60 70 80 90 100 9 18 27 36 45 54 63 72 81 8 16 24 32 48 56 64 7 14 21 28 35 42 49 6 12 5 15 25 4 3 2 1] :in-any-order))
+  (gen-all-mult (range 1 11) 100)
+  => (contains [10 20 30 40 50 60 70 80 90 100 9 18 27 36 45 54 63 72 81 8 16 24 32 48 56 64 7 14 21 28 35 42 49 6 12 5 15 25 4 3 2 1] :in-any-order)
+    (gen-all-mult (range 1 11) 10)
+  => (contains [10 9 8 7 6 5 4 3 2 1] :in-any-order))
 
 (defn max-pal-6 "Find the largest palindrome"
   []
   (reduce
    max
    (filter
-    #(and (>= (/ % 100000) 1) (pal? (num-digits-into-vec %)))
-    (gen-all-mult (range 100 1000)))))
+    #(and (not= nil %) (pal? (num-digits-into-vec %)))
+    (gen-all-mult (range 100 1000) 100000))))
 
 ;(fact (max-pal-6) => 906609)
 
