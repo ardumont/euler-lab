@@ -3,7 +3,8 @@
   (:use [midje.sweet])
   (:use [clojure.contrib.repl-utils :only [show]])
   (:use [clojure.pprint             :only [pprint]])
-  (:use [clojure.walk               :only [macroexpand-all]]))
+  (:use [clojure.walk               :only [macroexpand-all]])
+  (:use [my-project-euler-lab.utils :only [num-digits-into-vec]]))
 
                                         ; problem 4
 
@@ -13,13 +14,12 @@
 ;; Find the largest palindrome made from the product of two 3-digit
 ;; numbers.
 
-;((fact palimdromic-num 2) => [91 99])
-
-(defn pal? "Is the string given a palindrome?"
+(defn pal? "Is the sequence given a palindrome?"
   [v]
   (loop [seq v]
     (or (<= (count seq) 1)
-        (and (= (first seq) (last seq)) (recur (butlast (rest seq)))))))
+        (and (= (first seq) (last seq))
+             (recur (butlast (rest seq)))))))
 
 ;.;. There's a certain satisfaction in a little bit of pain. -- Madonna
 (fact
@@ -51,7 +51,7 @@
   (reduce
    max
    (filter
-    #(and (>= (/ % 100000) 1) (pal? (re-seq #"[\d]" (.toString %))))
+    #(and (>= (/ % 100000) 1) (pal? (num-digits-into-vec %)))
     (gen-all-mult (range 100 1000)))))
 
 ;(fact (max-pal-6) => 906609)
