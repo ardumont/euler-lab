@@ -3,8 +3,7 @@
   (:use [midje.sweet])
   (:use [clojure.contrib.repl-utils :only [show]])
   (:use [clojure.pprint             :only [pprint]])
-  (:use [clojure.walk               :only [macroexpand-all]])
-  )
+  (:use [clojure.walk               :only [macroexpand-all]]))
 
 (defn num-digits-into-vec "Transform big integer into a vector of digits."
   [num]
