@@ -8,7 +8,8 @@
                                         ; problem 4
 
 ;; A palindromic number reads the same both ways. 
-;; The largest palindrome made from the product of two 2-digit numbers is 9009 = 91 × 99.
+;; The largest palindrome made from the product of two
+;; 2-digit numbers is 9009 = 91 × 99.
 ;; Find the largest palindrome made from the product of two 3-digit
 ;; numbers.
 
@@ -18,51 +19,40 @@
   [v]
   (loop [seq v]
     (or (<= (count seq) 1)
-        (and (= (first seq) (last seq)) (recur (butlast (rest seq)))) 
-        )
-    )
-  )
+        (and (= (first seq) (last seq)) (recur (butlast (rest seq)))))))
+
+;.;. There's a certain satisfaction in a little bit of pain. -- Madonna
+(fact
+  (pal? [1 2 3]) => falsey
+  (pal? [1 2 3 4]) => falsey
+  (pal? [1 2 2 1]) => truthy
+  (pal? ["1" "2" "2" "1"]) => truthy
+  (pal? ["1" "2" "2" "1" "2" "1"]) => falsey
+  (pal? ["1" "2" "2" "2" "2" "1"]) => truthy
+  (pal? [\1 \2 \2 \1]) => truthy
+  (pal? [\1 \2 \2 \2]) => falsey
+  (pal? [1 2 3 2 1]) => truthy)
+
+(defn gen-all-mult "Product of all elements in the sequence 2x2."
+  [seq0]
+  (distinct
+   (mapcat
+    (fn [e] (map
+            (fn [s] (* s e))
+            seq0))
+    seq0)))
 
 (fact
-  (pal? [1 2 3]) => false
-  (pal? [1 2 3 4]) => false
-  (pal? [1 2 2 1]) => true
-  (pal? ["1" "2" "2" "1"]) => true
-  (pal? ["1" "2" "2" "1" "2" "1"]) => false
-  (pal? ["1" "2" "2" "2" "2" "1"]) => true
-  (pal? [1 2 3 2 1]) => true
-  )
+  (gen-all-mult (range 1 11))
+  => (contains [10 20 30 40 50 60 70 80 90 100 9 18 27 36 45 54 63 72 81 8 16 24 32 48 56 64 7 14 21 28 35 42 49 6 12 5 15 25 4 3 2 1] :in-any-order))
 
-
-;(map #(* 100 %) (take 900 (iterate inc 100)))
-;(filter #() (test-gen-all-mult (take 900(iterate inc 100)))))
-
-(defn test-gen-all-mult "Product of all 100-999 numbers"
-  [vec]
-  (loop [n (count vec) v vec acc nil]
-    (if (zero? n)
-      (distinct acc)
-      (recur (dec n) (rest v) (concat (map #(* (first v) %) vec) acc))
-      )
-    )
-  )
-
-(defn max-pal-4 "Find the largest palindrome"
-  []
-  (reduce max (filter #(and (>= (/ % 1000) 1) (pal? (re-seq #"[\d]" (.toString %))))
-                (test-gen-all-mult (take 90 (iterate inc 10))))))
-
-;.;. The highest reward for a man's toil is not what he gets for it but
-;.;. what he becomes by it. -- Ruskin
-(fact (max-pal-4) => 9009)
-
-;.;. The next function taunts you still. Will you rise to the challenge? --
-;.;. anonymous
-;.;. Whoever wants to reach a distant goal must take small steps. --
-;.;. fortune cookie
 (defn max-pal-6 "Find the largest palindrome"
   []
-  (reduce max (filter #(and (>= (/ % 100000) 1) (pal? (re-seq #"[\d]" (.toString %))))
-                 (test-gen-all-mult (take 900 (iterate inc 100))))))
+  (reduce
+   max
+   (filter
+    #(and (>= (/ % 100000) 1) (pal? (re-seq #"[\d]" (.toString %))))
+    (gen-all-mult (range 100 1000)))))
 
-(fact (max-pal-6) => 906609)
+;(fact (max-pal-6) => 906609)
+
