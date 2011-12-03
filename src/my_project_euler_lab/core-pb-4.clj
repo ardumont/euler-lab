@@ -35,12 +35,10 @@
 (defn gen-all-mult "Create the sequence of product from all the elements in the sequence 2x2. The product are filtered to not be above the limit."
   [seq0 limit]
   (distinct
-   (mapcat
-    (fn [e] (map
-            (fn [s] (let [pdt (* s e)] (when (<= pdt limit) pdt)))
-            seq0))
-    seq0)))
+   (for [x seq0 y seq0] (let [pdt (* x y)] (if (<= pdt limit) pdt)))))
 
+;.;. First they ignored you, then they laughed at you, then they fought
+;.;. you, now you've won. -- Not quite Gandhi
 (fact
   (gen-all-mult (range 1 11) 100)
   => (contains [10 20 30 40 50 60 70 80 90 100 9 18 27 36 45 54 63 72 81 8 16 24 32 48 56 64 7 14 21 28 35 42 49 6 12 5 15 25 4 3 2 1] :in-any-order)
@@ -55,6 +53,5 @@
     #(and (not= nil %) (pal? (num-digits-into-vec %)))
     (gen-all-mult (range 100 1000) 1000000))))
 
-;.;. There is an inevitable reward for good deeds. -- Ming Fu Wu
 (fact (max-pal-6) => 906609)
 
