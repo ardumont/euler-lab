@@ -21,8 +21,6 @@
         (and (= (first seq) (last seq))
              (recur (butlast (rest seq)))))))
 
-;.;. A journey of a thousand miles begins with a single step. --
-;.;. @alanmstokes
 (fact
   (pal? [1 2 3]) => falsey
   (pal? [1 2 3 4]) => falsey
@@ -55,7 +53,8 @@
    max
    (filter
     #(and (not= nil %) (pal? (num-digits-into-vec %)))
-    (gen-all-mult (range 100 1000) 100000))))
+    (gen-all-mult (range 100 1000) 1000000))))
 
-;(fact (max-pal-6) => 906609)
+;.;. There is an inevitable reward for good deeds. -- Ming Fu Wu
+(fact (max-pal-6) => 906609)
 
