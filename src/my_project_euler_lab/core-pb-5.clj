@@ -8,13 +8,13 @@
 
                                         ; problem 5
 
-;2520 is the smallest number that can be divided by each of the numbers from 1 to 10 without any remainder.
-(fact (reduce + (map #(rem 2520 %) (range 2 11))) => 0)
+;; 2520 is the smallest number that can be divided by each of the numbers from 1 to 10 without any remainder.
+;; (fact (reduce + (map #(rem 2520 %) (range 2 11))) => 0)
 
-;What is the smallest positive number that is evenly divisible by all
-;of the numbers from 1 to 20?
+;; What is the smallest positive number that is evenly divisible by all
+;; of the numbers from 1 to 20?
 
-; brute force
+;; brute force
 
 (defn euler-5-ok? "Can the number be divided by each of the numbers from 1 to borne without any remainder?"
   [num borne]

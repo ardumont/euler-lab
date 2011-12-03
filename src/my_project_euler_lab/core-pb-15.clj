@@ -10,9 +10,9 @@
   (:use my-project-euler-lab.combi)
   )
 
-;url: http://projecteuler.net/problem=15 (there are images)
-;Starting in the top left corner of a 2×2 grid, there are 6 routes (without backtracking) to the bottom right corner.
-;How many routes are there through a 20×20 grid?
+;; url: http://projecteuler.net/problem=15 (there are images)
+;; Starting in the top left corner of a 2×2 grid, there are 6 routes (without backtracking) to the bottom right corner.
+;; How many routes are there through a 20×20 grid?
 
 ;1x1
 ;a b => a b | a
