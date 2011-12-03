@@ -22,17 +22,15 @@
 
 (fact
   (euler-5-ok? 2520 10) => true
-  (euler-5-ok? 2521 10) => false
- )
+  (euler-5-ok? 2521 10) => false)
 
 (defn find-smallest-ok-euler-5 "Find the smallest number that check the predicate euler-5-ok?"
   [inc start range]
-  (first (take 1 (drop-while #(not (euler-5-ok? % range)) (iterate #(+ inc %) start))))
-  )
+  (first (take 1 (drop-while #(not (euler-5-ok? % range)) (iterate #(+ inc %) start)))))
 
 ;.;. The right word may be effective, but no word was ever as effective as
 ;.;. a rightly timed pause. -- Twain
-(fact(find-smallest-ok-euler-5 2 10 10) => 2520)
+(fact (find-smallest-ok-euler-5 2 10 10) => 2520)
 ;(fact (find-smallest-ok-euler-5 2 20 20) => 232792560)
 
 

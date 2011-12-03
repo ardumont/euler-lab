@@ -26,17 +26,13 @@
   (square 10) => 100
   (square 12) => 144
   (reduce + (map square (range 1 11))) => 385
-  (square (reduce + (range 1 11))) => 3025
-)
+  (square (reduce + (range 1 11))) => 3025)
 
 (defn diff-sum-square-square-sum "Compute the difference between the sum of the square and the square of the sum"
   [range]
-  (- (square (reduce + range))  (reduce + (map square range)))
-  )
+  (- (square (reduce + range)) (reduce + (map square range))))
 
-;.;. Hey! You're green! Refactor then we get to go red again! -- @zspencer
 (fact
   (diff-sum-square-square-sum (range 1 11)) => 2640
-    (diff-sum-square-square-sum (range 1 101)) => 25164150
-  )
+  (diff-sum-square-square-sum (range 1 101)) => 25164150)
 
