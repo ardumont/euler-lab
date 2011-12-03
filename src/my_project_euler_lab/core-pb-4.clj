@@ -6,7 +6,7 @@
   (:use [clojure.walk               :only [macroexpand-all]])
   (:use [my-project-euler-lab.utils :only [num-digits-into-vec]]))
 
-                                        ; problem 4
+;; problem 4
 
 ;; A palindromic number reads the same both ways. 
 ;; The largest palindrome made from the product of two
@@ -16,10 +16,7 @@
 
 (defn pal? "Is the sequence given a palindrome?"
   [v]
-  (loop [seq v]
-    (or (<= (count seq) 1)
-        (and (= (first seq) (last seq))
-             (recur (butlast (rest seq)))))))
+  (= v (reverse v)))
 
 (fact
   (pal? [1 2 3]) => falsey
@@ -37,8 +34,6 @@
   (distinct
    (for [x seq0 y seq0] (let [pdt (* x y)] (if (<= pdt limit) pdt)))))
 
-;.;. First they ignored you, then they laughed at you, then they fought
-;.;. you, now you've won. -- Not quite Gandhi
 (fact
   (gen-all-mult (range 1 11) 100)
   => (contains [10 20 30 40 50 60 70 80 90 100 9 18 27 36 45 54 63 72 81 8 16 24 32 48 56 64 7 14 21 28 35 42 49 6 12 5 15 25 4 3 2 1] :in-any-order)
@@ -53,5 +48,7 @@
     #(and (not= nil %) (pal? (num-digits-into-vec %)))
     (gen-all-mult (range 100 1000) 1000000))))
 
+;.;. One small test for a codebase, one giant leap for quality kind! --
+;.;. @zspencer
 (fact (max-pal-6) => 906609)
 
