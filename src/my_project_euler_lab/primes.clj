@@ -74,7 +74,7 @@
 
 (defn prime? "Is the number a prime?"
   [n primes-seq]
-  (not (some #(zero? (rem n %)) (take (floor (sqrt n)) primes-seq))))
+  (not-any? #(zero? (rem n %)) (take (floor (sqrt n)) primes-seq)))
 
 (fact
   (prime? 11 [2 3 5]) => true
@@ -98,7 +98,7 @@
   (take 5 (lazy-primes))   => [2 3 5 7 11]
   (take 10 (lazy-primes))  => [2 3 5 7 11 13 17 19 23 29]
   (take 15 (lazy-primes))  => [2 3 5 7 11 13 17 19 23 29 31 37 41 43 47]
-  (take 100 (lazy-primes)) => [ 2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83 89 97 101 103 107 109 113 127 131 137 139 149 151 157 163 167 173 179 181 191 193 197 199 211 223 227 229 233 239 241 251 257 263 269 271 277 281 283 293 307 311 313 317 331 337 347 349 353 359 367 373 379 383 389 397 401 409 419 421 431 433 439 443 449 457 461 463 467 479 487 491 499 503 509 521 523 541])
+  (take 100 (lazy-primes)) => [2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83 89 97 101 103 107 109 113 127 131 137 139 149 151 157 163 167 173 179 181 191 193 197 199 211 223 227 229 233 239 241 251 257 263 269 271 277 281 283 293 307 311 313 317 331 337 347 349 353 359 367 373 379 383 389 397 401 409 419 421 431 433 439 443 449 457 461 463 467 479 487 491 499 503 509 521 523 541])
 
 (defn all-divisors "Compute all divisors of a number (improved version)"
   [n]
@@ -107,7 +107,7 @@
    (= 1 n) [n]
    (= 2 n) [1 2]
    :else
-   (loop [acc #{} num (ceil (sqrt (inc n)))]
+   (loop [acc #{} num (int (sqrt (inc n)))]
      (if (zero? num)
        acc
        (if (zero? (rem n num))
@@ -117,12 +117,12 @@
 (fact
   (all-divisors 0) => "infinity"
   (all-divisors 1) => [1]
-  (all-divisors 2) => (contains [1 2] :in-any-order)
-  (all-divisors 10) => (contains [1 2 5 10] :in-any-order)
-  (all-divisors 15) => (contains [1 3 5 15] :in-any-order)
-  (all-divisors 21) => (contains [1 3 7 21] :in-any-order)
-  (all-divisors 28) => (contains [1 2 4 7 14 28] :in-any-order)
-  (all-divisors 120) => (contains [1 2 3 4 5 6 8 10 12 15 20 24 30 40 60 120] :in-any-order))
+  (all-divisors 2) => (just [1 2] :in-any-order)
+  (all-divisors 10) => (just [1 2 5 10] :in-any-order)
+  (all-divisors 15) => (just [1 3 5 15] :in-any-order)
+  (all-divisors 21) => (just [1 3 7 21] :in-any-order)
+  (all-divisors 28) => (just [1 2 4 7 14 28] :in-any-order)
+  (all-divisors 120) => (just [1 2 3 4 5 6 8 10 12 15 20 24 30 40 60 120] :in-any-order))
 
 (defn all-divisors-bi "Compute all divisors of a number but itself."
   [n]
@@ -131,14 +131,13 @@
    (= 1 n) nil
    (= 2 n) [1]
    :else
-   (loop [acc #{} num (ceil (sqrt (inc n)))]
+   (loop [acc #{} num (int (sqrt (inc n)))]
      (if (= 1 num)
        (conj acc 1)
        (if (zero? (rem n num))
          (recur (conj acc num (/ n num)) (dec num)) 
          (recur acc (dec num)))))))
 
-;.;. The work itself praises the master. -- CPE Bach
 (fact
   (all-divisors-bi 0) => "infinity"
   (all-divisors-bi 1) => nil
