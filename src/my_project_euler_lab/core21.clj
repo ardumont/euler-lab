@@ -1,4 +1,4 @@
-(ns my-project-euler-lab.core-pb-21
+(ns my-project-euler-lab.core21
   (:use [clojure.test               :only [run-tests]])
   (:use [midje.sweet])
   (:use [my-project-euler-lab.primes :only [all-divisors]]))

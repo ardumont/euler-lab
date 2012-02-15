@@ -1,4 +1,4 @@
-(ns my-project-euler-lab.core-pb-14
+(ns my-project-euler-lab.core14
   (:use [clojure.test               :only [run-tests]])
   (:use [midje.sweet])
   (:use [clojure.pprint             :only [pprint]]))
@@ -75,12 +75,12 @@
 ;    (find-greatest-seq-below-start 1000000 500000) => [837799 525]
     )
 
-;my-project-euler-lab.core-pb-14> (time (find-greatest-seq-below-start
+;my-project-euler-lab.core14> (time (find-greatest-seq-below-start
 ;1000000 500000))
 ;"Elapsed time: 9739.327681 msecs"
 ;[837799 525]
 
-;my-project-euler-lab.core-pb-14> (time (find-greatest-seq-below-start
+;my-project-euler-lab.core14> (time (find-greatest-seq-below-start
 ;1000000 1))
 ;"Elapsed time: 18319.081637 msecs"
 ;[837799 525]

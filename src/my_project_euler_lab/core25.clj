@@ -1,4 +1,4 @@
-(ns my-project-euler-lab.core-pb-25
+(ns my-project-euler-lab.core25
   (:use [clojure.test               :only [run-tests]])
   (:use [midje.sweet])
   (:use [my-project-euler-lab.utils :only [count-digits-from-number]]))

@@ -1,4 +1,4 @@
-(ns my-project-euler-lab.core-pb-10
+(ns my-project-euler-lab.core10
   (:use [clojure.test               :only [run-tests]])
   (:use [midje.sweet])
   (:use [clojure.pprint             :only [pprint]]))
@@ -15,7 +15,7 @@
 ;  [borne]
 ;(reduce +
 ;(filter #(<= % borne)
-;        (my-project-euler-lab.core-pb-7/prime-numbers-improved borne)
+;        (my-project-euler-lab.core7/prime-numbers-improved borne)
 ;)))
 
 ;.;. Before the reward there must be labor. You plant before you

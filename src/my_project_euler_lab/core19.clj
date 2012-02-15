@@ -1,4 +1,4 @@
-(ns my-project-euler-lab.core-pb-19
+(ns my-project-euler-lab.core19
   (:use [clojure.test               :only [run-tests]])
   (:use [midje.sweet])
   (:use clj-time.core)

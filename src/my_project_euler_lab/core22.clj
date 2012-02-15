@@ -1,4 +1,4 @@
-(ns my-project-euler-lab.core-pb-22
+(ns my-project-euler-lab.core22
   (:use [clojure.test               :only [run-tests]])
   (:use [midje.sweet])
   (:use [clojure.string :only [join split]]))

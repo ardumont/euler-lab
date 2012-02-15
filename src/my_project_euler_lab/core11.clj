@@ -1,4 +1,4 @@
- (ns my-project-euler-lab.core-pb-11
+ (ns my-project-euler-lab.core11
   (:use [clojure.test               :only [run-tests]])
   (:use [midje.sweet])
   (:use [clojure.pprint             :only [pprint]])
