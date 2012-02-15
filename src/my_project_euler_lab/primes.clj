@@ -12,7 +12,7 @@
     (loop [candidate 3 current (dec n) primes [2]]
       (if (zero? current)
         primes
-        (if (not (some #(zero? (rem candidate %)) (take (floor (sqrt candidate)) primes)))
+        (if (not (some #(zero? (rem candidate %)) (take (Math/floor (Math/sqrt candidate)) primes)))
           (recur (+ 2 candidate) (dec current) (conj primes candidate))
           (recur (+ 2 candidate) current primes))))))
 
@@ -71,7 +71,7 @@
 
 (defn prime? "Is the number a prime?"
   [n primes-seq]
-  (not-any? #(= 0 (rem n %)) (take (floor (sqrt n)) primes-seq)))
+  (not-any? #(= 0 (rem n %)) (take (Math/floor (Math/sqrt n)) primes-seq)))
 
 (fact
   (prime? 11 [2 3 5]) => true
@@ -104,7 +104,7 @@
    (= 1 n) [n]
    (= 2 n) [1 2]
    :else
-   (loop [acc #{} num (int (sqrt (inc n)))]
+   (loop [acc #{} num (int (Math/sqrt (inc n)))]
      (if (zero? num)
        acc
        (if (zero? (rem n num))
@@ -128,7 +128,7 @@
    (= 1 n) nil
    (= 2 n) [1]
    :else
-   (loop [acc #{} num (int (sqrt (inc n)))]
+   (loop [acc #{} num (int (Math/sqrt (inc n)))]
      (if (= 1 num)
        (conj acc 1)
        (if (zero? (rem n num))

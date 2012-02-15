@@ -41,6 +41,17 @@
 ;(1 2 3 4   5  6  7  8  9 10 ...)
 ; 1 3 6 10 15 21 28 36 45 55 ...
 
+(defn gcd "Greatest common divisor"
+  [a b]
+  (if (= 0 b) a
+      (gcd b (mod a b))))
+
+(fact 
+  (gcd 2 4) => 2
+  (gcd 10 5) => 5
+  (gcd 5 7) => 1
+  (gcd 1023 858) => 33)
+
 (defn all-divisors "Compute all divisors of a number"
   [n]
   (cond
@@ -112,7 +123,7 @@
   [nb-divisors index-number-start triangle-number-start primes-seq]
   (loop [curr triangle-number-start num-nat (inc index-number-start)]
     (let [cpt-triangle-nat (+ curr num-nat)
-          primes-sequence (take (ceil (sqrt cpt-triangle-nat)) primes-seq)
+          primes-sequence (take (Math/ceil (Math/sqrt cpt-triangle-nat)) primes-seq)
           nb-divisors-count (count-divisors-with-dec-prime primes-sequence cpt-triangle-nat)]
       (do #_(println "curr" curr "index-num-nat" num-nat "cpt-triangle-nat" cpt-triangle-nat "nb-divisors-count" nb-divisors-count "primes" primes-sequence)
           (if (<= nb-divisors nb-divisors-count)
@@ -161,7 +172,7 @@
 
 (defn rand-triangle-nat "Generate a random triangle natural from the interval 1-n"
   [n]
-  (nth-triangle-nat (ceil (rand n))))
+  (nth-triangle-nat (Math/ceil (rand n))))
 
 (fact
   (find-triangle-nat-with-n-divisors 5) => 28

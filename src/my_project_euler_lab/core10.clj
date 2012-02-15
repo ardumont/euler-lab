@@ -40,12 +40,9 @@
     (loop [candidate 3 sum 2 primes [2]]
     (if (< borne candidate)
       sum
-      (if (not (some #(zero? (rem candidate %)) (take (floor (sqrt candidate)) primes)))
+      (if (not (some #(zero? (rem candidate %)) (take (Math/floor (Math/sqrt candidate)) primes)))
         (recur (+ 2 candidate) (+ sum candidate) (conj primes candidate))
-        (recur (+ 2 candidate) sum primes)
-        )))
-    )
-  )
+        (recur (+ 2 candidate) sum primes))))))
 
 (fact
   (sum-prime-numbers 0) => 0
@@ -54,7 +51,6 @@
   (sum-prime-numbers 3) => 5
   (sum-prime-numbers 4) => 5
   (sum-prime-numbers 5) => 10
-  (sum-prime-numbers 7) => 17
-  ;(sum-prime-numbers 2000000) => 142913828922
-)
+  (sum-prime-numbers 7) => 17)
+;;(sum-prime-numbers 2000000) => 142913828922
 

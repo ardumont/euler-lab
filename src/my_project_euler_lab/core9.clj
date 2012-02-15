@@ -36,7 +36,7 @@
   )
 
 (fact
-;  (find-triplet-ok-bf (range 0 (sqrt 1000))) => [200 375 425]
+;  (find-triplet-ok-bf (range 0 (Math/sqrt 1000))) => [200 375 425]
   (find-triplet-ok-bf (range 0 1000)) => [200 375 425]
   )
 

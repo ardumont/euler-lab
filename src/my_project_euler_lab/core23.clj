@@ -27,7 +27,7 @@
 
 (defn all-dec-in-sums "Find all the sums possibles that gives n with 2 integers"
   [n]
-  (let [half-n (ceil (/ n 2))
+  (let [half-n (Math/ceil (/ n 2))
         integers-s (range 1 (inc half-n))]
     (reduce conj #{}
             (map

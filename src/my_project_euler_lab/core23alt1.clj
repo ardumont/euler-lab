@@ -45,7 +45,7 @@
 
 (defn sum-2-abundants? "Can the number be the sum of 2 abundants numbers?"
   [n]
-  (let [half-n (ceil (/ n 2))
+  (let [half-n (Math/ceil (/ n 2))
         integers-s (range 1 (inc half-n))]
     (some #(and (abundant? %) (abundant? (- n %))) integers-s)))
 
@@ -86,7 +86,7 @@
 
 (defn sum-2-abundants-wm? "Can the number be the sum of 2 abundants numbers?"
   [m-abundants n]
-  (let [half-n (ceil (/ n 2))
+  (let [half-n (Math/ceil (/ n 2))
         integers-s (range 1 (inc half-n))]
     (some #(and (abundant-wm? m-abundants %)
                 (abundant-wm? m-abundants (- n %)))

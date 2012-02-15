@@ -45,7 +45,7 @@
     (loop [candidate 3 current (dec n) primes [2]]
       (if (zero? current)
         primes
-        (if (not (some #(zero? (rem candidate %)) (take (floor (sqrt candidate)) primes)))
+        (if (not (some #(zero? (rem candidate %)) (take (Math/floor (Math/sqrt candidate)) primes)))
           (recur (+ 2 candidate) (dec current) (conj primes candidate))
           (recur (+ 2 candidate) current primes))))))
 
