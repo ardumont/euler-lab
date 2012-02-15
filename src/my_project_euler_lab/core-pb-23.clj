@@ -1,11 +1,8 @@
 (ns my-project-euler-lab.core-pb-23
   (:use [clojure.test               :only [run-tests]])
   (:use [midje.sweet])
-  (:use [clojure.contrib.repl-utils :only [show]])
   (:use [clojure.set :only [difference union]] )
-  (:use clojure.contrib.math)
-  (:use [my-project-euler-lab.primes :only [all-divisors-bi]] )
-  )
+  (:use [my-project-euler-lab.primes :only [all-divisors-bi]]))
 
 ;A perfect number is a number for which the sum of its proper divisors
 ;is exactly equal to the number. 

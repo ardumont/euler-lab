@@ -1,10 +1,7 @@
 (ns my-project-euler-lab.core-pb-14
   (:use [clojure.test               :only [run-tests]])
   (:use [midje.sweet])
-  (:use [clojure.contrib.repl-utils :only [show]])
-  (:use [clojure.pprint             :only [pprint]])
-  (:use [clojure.walk               :only [macroexpand-all]])
-  (:use clojure.contrib.math))
+  (:use [clojure.pprint             :only [pprint]]))
 
 ;; The following iterative sequence is defined for the set of positive integers:
 ;; n → n/2 (n is even)

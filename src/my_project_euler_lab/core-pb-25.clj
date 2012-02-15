@@ -1,7 +1,6 @@
 (ns my-project-euler-lab.core-pb-25
   (:use [clojure.test               :only [run-tests]])
   (:use [midje.sweet])
-  (:use [clojure.contrib.repl-utils :only [show]])
   (:use [my-project-euler-lab.utils :only [count-digits-from-number]]))
 
 ;; The Fibonacci sequence is defined by the recurrence relation:

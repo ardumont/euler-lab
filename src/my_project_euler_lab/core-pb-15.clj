@@ -1,14 +1,8 @@
 (ns my-project-euler-lab.core-pb-15
   (:use [clojure.test               :only [run-tests]])
   (:use [midje.sweet])
-  (:use [clojure.contrib.repl-utils :only [show]])
   (:use [clojure.pprint             :only [pprint]])
-  (:use [clojure.walk               :only [macroexpand-all]])
-  (:use clojure.contrib.math)
-  ;(:use [clojure.set                :only [intersection difference
-                                        ;union]])
-  (:use my-project-euler-lab.combi)
-  )
+  (:use my-project-euler-lab.combi))
 
 ;; url: http://projecteuler.net/problem=15 (there are images)
 ;; Starting in the top left corner of a 2×2 grid, there are 6 routes (without backtracking) to the bottom right corner.

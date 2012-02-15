@@ -1,9 +1,7 @@
 (ns my-project-euler-lab.utils
   (:use [clojure.test               :only [run-tests]])
   (:use [midje.sweet])
-  (:use [clojure.contrib.repl-utils :only [show]])
-  (:use [clojure.pprint             :only [pprint]])
-  (:use [clojure.walk               :only [macroexpand-all]]))
+  (:use [clojure.pprint             :only [pprint]]))
 
 (defn num-digits-into-vec "Transform big integer into a vector of digits."
   [num]

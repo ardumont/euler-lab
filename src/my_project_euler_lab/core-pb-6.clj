@@ -1,9 +1,7 @@
 (ns my-project-euler-lab.core-pb-6
   (:use [clojure.test               :only [run-tests]])
   (:use [midje.sweet])
-  (:use [clojure.contrib.repl-utils :only [show]])
-  (:use [clojure.pprint             :only [pprint]])
-  (:use [clojure.walk               :only [macroexpand-all]]))
+  (:use [clojure.pprint             :only [pprint]]))
 
 ;; The sum of the squares of the first ten natural numbers is,
 ;; 12 + 22 + ... + 102 = 385

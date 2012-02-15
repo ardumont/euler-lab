@@ -1,11 +1,8 @@
 (ns my-project-euler-lab.primes
   (:use [clojure.test               :only [run-tests]])
   (:use [midje.sweet])
-  (:use [clojure.contrib.repl-utils :only [show]])
   (:use [clojure.pprint             :only [pprint]])
-  (:use [clojure.walk               :only [macroexpand-all]])
-  (:use [ clojure.set :only [difference]])
-  (:use clojure.contrib.math))
+  (:use [clojure.set :only [difference]]))
 
 ; memory, not for using
 (defn prime-numbers-improved "Return the list of the n first prime numbers"
@@ -74,7 +71,7 @@
 
 (defn prime? "Is the number a prime?"
   [n primes-seq]
-  (not-any? #(zero? (rem n %)) (take (floor (sqrt n)) primes-seq)))
+  (not-any? #(= 0 (rem n %)) (take (floor (sqrt n)) primes-seq)))
 
 (fact
   (prime? 11 [2 3 5]) => true

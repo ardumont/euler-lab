@@ -1,12 +1,8 @@
 (ns my-project-euler-lab.core-pb-10
   (:use [clojure.test               :only [run-tests]])
   (:use [midje.sweet])
-  (:use [clojure.contrib.repl-utils :only [show]])
-  (:use [clojure.pprint             :only [pprint]])
-  (:use [clojure.walk               :only [macroexpand-all]])
-  (:use clojure.contrib.math)
-;  (:use ( my-project-euler-lab.core-pb-7 prime-numbers))
-  )
+  (:use [clojure.pprint             :only [pprint]]))
+
                                         ; problem 10
 
 ;; The sum of the primes below 10 is 2 + 3 + 5 + 7 = 17.

@@ -1,7 +1,6 @@
 (ns my-project-euler-lab.core-pb-24
   (:use [clojure.test               :only [run-tests]])
-  (:use [midje.sweet])
-  (:use [clojure.contrib.repl-utils :only [show]]))
+  (:use [midje.sweet]))
 
 ;; A permutation is an ordered arrangement of objects.
 ;; For example, 3124 is one possible permutation of the digits 1, 2, 3 and 4.

@@ -1,10 +1,7 @@
 (ns my-project-euler-lab.core-pb-20
   (:use [clojure.test               :only [run-tests]])
   (:use [midje.sweet])
-  (:use [clojure.contrib.repl-utils :only [show]])
   (:use [clojure.pprint             :only [pprint]])
-  (:use [clojure.walk               :only [macroexpand-all]])
-  (:use clojure.contrib.math)
   (:use [my-project-euler-lab.combi :only [factorial]])
   (:use [my-project-euler-lab.utils :only [num-digits-into-vec]]))
 

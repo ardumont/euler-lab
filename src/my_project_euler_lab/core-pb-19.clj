@@ -1,10 +1,8 @@
 (ns my-project-euler-lab.core-pb-19
   (:use [clojure.test               :only [run-tests]])
   (:use [midje.sweet])
-  (:use [clojure.contrib.repl-utils :only [show]])
   (:use clj-time.core)
-  (:refer-clojure :exclude [extend])
-  )
+  (:refer-clojure :exclude [extend]))
 
 ;; You are given the following information, but you may prefer to do some research for yourself.
 

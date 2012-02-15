@@ -1,12 +1,8 @@
 (ns my-project-euler-lab.core-pb-16
   (:use [clojure.test               :only [run-tests]])
   (:use [midje.sweet])
-  (:use [clojure.contrib.repl-utils :only [show]])
   (:use [clojure.pprint             :only [pprint]])
-  (:use [clojure.walk               :only [macroexpand-all]])
-  (:use clojure.contrib.math)
-  (:use [my-project-euler-lab.utils :only [num-digits-into-vec]])
-  )
+  (:use [my-project-euler-lab.utils :only [num-digits-into-vec]]))
 
 ;; 2^15 = 32768 and the sum of its digits is 3 + 2 + 7 + 6 + 8 = 26.
 ;; What is the sum of the digits of the number 2^1000?

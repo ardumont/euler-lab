@@ -1,9 +1,7 @@
 (ns my-project-euler-lab.core-pb-22
   (:use [clojure.test               :only [run-tests]])
   (:use [midje.sweet])
-  (:use [clojure.contrib.repl-utils :only [show]])
-  (:use [clojure.string :only (join split)])
-  )
+  (:use [clojure.string :only [join split]]))
 
 ;; Using names.txt a 46k text file containing over 5000 first names, begin by sorting it into alphabetical order.
 ;; Then working out the alphabetical value for each name, multiply this value by its alphabetical position in the list to obtain a name score.

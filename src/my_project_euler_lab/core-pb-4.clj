@@ -1,9 +1,7 @@
 (ns my-project-euler-lab.core-pb-4
   (:use [clojure.test               :only [run-tests]])
   (:use [midje.sweet])
-  (:use [clojure.contrib.repl-utils :only [show]])
   (:use [clojure.pprint             :only [pprint]])
-  (:use [clojure.walk               :only [macroexpand-all]])
   (:use [my-project-euler-lab.utils :only [num-digits-into-vec]]))
 
 ;; problem 4
