@@ -45,8 +45,7 @@
   (seq-euler-14-count 13) => 10
   (seq-euler-14-count 20) => 8
   (seq-euler-14-count 1024) => 11
-  (seq-euler-14-count (expt 2 20)) => 21
-  ) 
+  (seq-euler-14-count (clojure.contrib.math/expt 2 20)) => 21) 
 
 ; seq which begins with a power of 2 will be the smallest
 
