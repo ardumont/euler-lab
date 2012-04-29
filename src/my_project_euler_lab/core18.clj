@@ -241,7 +241,7 @@
   (walk-tree-max-0 map-euler-18-simple) => 29
   (walk-tree-max-0 map-euler-18-simple-2) => 23)
 
-;# fail -> too naive -> i must trip through all the nodes of the tree
+;# fail -> too naive -> i must walk through all the nodes of the tree
 
 (defn walk-tree-euler-18 "Find the routes with the highest sum."
   ([m]
