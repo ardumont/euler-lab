@@ -243,34 +243,24 @@
 
 ;# fail -> too naive -> i must walk through all the nodes of the tree
 
-(defn walk-tree-euler-18 "Find the routes with the highest sum."
-  ([m]
-      (if (zero? (count m))
-        0
-        (walk-tree-euler-18 m [0 0])))
-  ([m coord]
-     (let [val ((m coord) :v)
-           vchild ((m coord) :c)
-           sum-max ((m coord) :s)]
-       (concat [sum-max]
-               (mapcat (fn [coordinates]
-                         (let [val-1 ((m coordinates) :v)
-                               chi-1 ((m coordinates) :c)]
-                           (let [upd-m (assoc m coordinates {:v val-1 :c chi-1 :s (+ val-1 sum-max)} )]
-                             (walk-tree-euler-18 upd-m coordinates))))
-                       vchild)))))
+(defn wt "Find the routes with the highest sum."
+  ([m] (if (zero? (count m)) 0 (wt m [0 0])))
+  ([m cd]
+     (let [{:keys [v c s]} (m cd)]
+       (concat [s]
+               (mapcat (fn [ncd] (wt (update-in m [ncd :s] (fn [s1] (+ s s1))) ncd)) c)))))
 
 (fact
-  (walk-tree-euler-18 map-euler-18-simple-2) =>  '(3 10 12 20 17 14 19 23 7 11 16 20 13 22 16))
+  (wt map-euler-18-simple-2) =>  '(3 10 12 20 17 14 19 23 7 11 16 20 13 22 16))
 
 (defn walk-tree-max-1 "Compute the max sum of the tree"
   [m]
-  (let [v-sums-max (walk-tree-euler-18 m)]
+  (let [v-sums-max (wt m)]
     (reduce max v-sums-max)))
 
-;.;. Out of clutter find simplicity; from discord find harmony; in the
-;.;.                               ; middle of difficulty lies
-;.;.                               ; opportunity. -- Einstein
 (fact
-  (walk-tree-max-1 map-euler-18-simple-2) =>  23
+  (walk-tree-max-1 map-euler-18-simple-2) =>  23)
+
+;.;. The highest reward for a man's toil is not what he gets for it but what he becomes by it. -- Ruskin
+(fact
   (walk-tree-max-1 map-euler-18) =>  1074)
