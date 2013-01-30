@@ -1,8 +1,6 @@
 (ns my-project-euler-lab.primes
-  (:use [clojure.test               :only [run-tests]])
-  (:use [midje.sweet])
-  (:use [clojure.pprint             :only [pprint]])
-  (:use [clojure.set :only [difference]]))
+  (:use [midje.sweet]
+        [clojure.set :only [difference]]))
 
 ; memory, not for using
 (defn prime-numbers-improved "Return the list of the n first prime numbers"
@@ -108,7 +106,7 @@
      (if (zero? num)
        acc
        (if (zero? (rem n num))
-         (recur (conj acc num (/ n num)) (dec num)) 
+         (recur (conj acc num (/ n num)) (dec num))
          (recur acc (dec num)))))))
 
 (fact
@@ -132,7 +130,7 @@
      (if (= 1 num)
        (conj acc 1)
        (if (zero? (rem n num))
-         (recur (conj acc num (/ n num)) (dec num)) 
+         (recur (conj acc num (/ n num)) (dec num))
          (recur acc (dec num)))))))
 
 (fact

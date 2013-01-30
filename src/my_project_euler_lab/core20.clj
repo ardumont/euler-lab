@@ -1,9 +1,7 @@
 (ns my-project-euler-lab.core20
-  (:use [clojure.test               :only [run-tests]])
-  (:use [midje.sweet])
-  (:use [clojure.pprint             :only [pprint]])
-  (:use [my-project-euler-lab.combi :only [factorial]])
-  (:use [my-project-euler-lab.utils :only [num-digits-into-vec]]))
+  (:use [midje.sweet]
+        [my-project-euler-lab.combi :only [factorial]]
+        [my-project-euler-lab.utils :only [num-digits-into-vec]]))
 
 ;; n! means n × (n − 1) × ... × 3 × 2 × 1
 
@@ -16,13 +14,13 @@
   [n]
   (if (< n 0)
     0
-    (reduce + (num-digits-into-vec (factorial n))))
-  )
+    (reduce + (num-digits-into-vec (factorial n)))))
 
 ;.;. A journey of a thousand miles begins with a single step. --
 ;.;. @alanmstokes
 (fact
   (count-digit-from-factorial -10) => 0
-  (count-digit-from-factorial 10) => 27
-  (count-digit-from-factorial 100) => 648
-  )
+  (count-digit-from-factorial 10) => 27)
+
+(future-fact
+ (count-digit-from-factorial 100)) => 648

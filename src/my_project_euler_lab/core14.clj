@@ -1,7 +1,6 @@
 (ns my-project-euler-lab.core14
-  (:use [clojure.test               :only [run-tests]])
   (:use [midje.sweet])
-  (:use [clojure.pprint             :only [pprint]]))
+  (:require [clojure.math.numeric-tower :as m]))
 
 ;; The following iterative sequence is defined for the set of positive integers:
 ;; n → n/2 (n is even)
@@ -9,7 +8,7 @@
 ;; Using the rule above and starting with 13, we generate the following sequence:
 ;; 13 → 40 → 20 → 10 → 5 → 16 → 8 → 4 → 2 → 1
 ;; It can be seen that this sequence (starting at 13 and finishing at 1)
-;; contains 10 terms. 
+;; contains 10 terms.
 ;; Although it has not been proved yet (Collatz Problem), it is thought
 ;; that all starting numbers finish at 1.
 
@@ -45,7 +44,7 @@
   (seq-euler-14-count 13) => 10
   (seq-euler-14-count 20) => 8
   (seq-euler-14-count 1024) => 11
-  (seq-euler-14-count (clojure.contrib.math/expt 2 20)) => 21) 
+  (seq-euler-14-count (m/expt 2 20)) => 21)
 
 ; seq which begins with a power of 2 will be the smallest
 
@@ -59,7 +58,7 @@
 
 (defn find-greatest-seq-below-start "Find the greatest sequence with the sequence starting from a number below 1 000 000"
   [starting-from end]
-  (loop [cnt starting-from maxi 1 start starting-from]; maxi -> max result from
+  (loop [cnt starting-from maxi 1 start starting-from] ; maxi -> max result from
                                         ; all computations, start ->
                                         ; counter from which the max is
     (if (<= cnt end)
@@ -67,12 +66,10 @@
       (let [seq-euler-res (seq-euler-14-count cnt)]
         (if (< maxi seq-euler-res)
           (recur (dec cnt) seq-euler-res cnt)
-          (recur (dec cnt) maxi start)))))
-  )
+          (recur (dec cnt) maxi start))))))
 
-(fact
-;    (find-greatest-seq-below-start 1000000 500000) => [837799 525]
-    )
+(future-fact
+  (find-greatest-seq-below-start 1000000 500000) => [837799 525])
 
 ;my-project-euler-lab.core14> (time (find-greatest-seq-below-start
 ;1000000 500000))

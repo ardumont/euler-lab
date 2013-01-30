@@ -41,9 +41,7 @@
    (= "W" l) 23
    (= "X" l) 24
    (= "Y" l) 25
-   (= "Z" l) 26
-   )
-  )
+   (= "Z" l) 26))
 
 (tabular
  (fact (lweight ?l) => ?r)
@@ -73,19 +71,16 @@
  "W" 23
  "X" 24
  "Y" 25
- "Z" 26
-  )
+ "Z" 26)
 
 (defn wweight "Compute the weight of the word in the alphabet"
   [word]
   (let [vec-letters (vec word)]
-    (reduce + (map #(lweight (str %)) vec-letters)))
-  )
+    (reduce + (map #(lweight (str %)) vec-letters))))
 
 (fact "Compute the weight of the word in the alphabet"
   (wweight "CHLOE") => 43
-  (wweight "COLIN") => 53
-  )
+  (wweight "COLIN") => 53)
 
 (defn sum-all-number-from-sorted-list "Compute the sum of the computation asked on a sorted list"
   [m-words]
@@ -94,8 +89,7 @@
             (map (fn [word] (*
                             (m-words word)
                             (wweight word)))
-                 keys-words)))
-  )
+                 keys-words))))
 
 (fact
   (sum-all-number-from-sorted-list {"antoine" 1 "test" 2}) => 100
@@ -103,13 +97,12 @@
     (keys {"antoine" 1 "test" 2}) => ["antoine" "test"]
     (wweight "antoine") => 50
     (wweight "test") => 25)
-  (sum-all-number-from-sorted-list {"CHLOE" 1 "COLIN" 2}) => 149
-  )
+  (sum-all-number-from-sorted-list {"CHLOE" 1 "COLIN" 2}) => 149)
 
 ; to work on the given file, strip the " and the ,
 ;(sed 's/[,]/ /gi' names.txt | sed 's/"//gi') > names-wq.txt
 
-(def v-ordered-words (sort (split (slurp "/home/tony/repositories/perso/my-project-euler-lab/src/my_project_euler_lab/names-wq.txt") #" ")))
+(def v-ordered-words (sort (split (slurp "/home/tony/repo/perso/my-project-euler-lab/src/my_project_euler_lab/names-wq.txt") #" ")))
 
 (defn vec-to-map "Construct a map from a vec"
   [v]
@@ -120,8 +113,7 @@
         (recur (assoc acc (first lst) curr) (rest lst) (inc curr))))))
 
 (fact
-  (vec-to-map ["toto" "theo" "foo"]) => {"toto" 1 "theo" 2 "foo" 3}
-  )
+  (vec-to-map ["toto" "theo" "foo"]) => {"toto" 1 "theo" 2 "foo" 3})
 
 ;.;. Simplicity, carried to the extreme, becomes elegance. -- Jon Franklin
 (fact (sum-all-number-from-sorted-list (vec-to-map v-ordered-words)) => 871198282)

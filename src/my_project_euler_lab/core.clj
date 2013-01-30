@@ -1,1 +1,4 @@
-(ns my-project-euler-lab.core)
+(ns my-project-euler-lab.core
+  (:use [midje.sweet]))
+
+(fact true => true)

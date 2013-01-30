@@ -1,7 +1,6 @@
 (ns my-project-euler-lab.core25
-  (:use [clojure.test               :only [run-tests]])
-  (:use [midje.sweet])
-  (:use [my-project-euler-lab.utils :only [count-digits-from-number]]))
+  (:use [midje.sweet]
+        [my-project-euler-lab.utils :only [count-digits-from-number]]))
 
 ;; The Fibonacci sequence is defined by the recurrence relation:
 ;;    Fn = Fn−1 + Fn−2, where F1 = 1 and F2 = 1.
@@ -53,7 +52,9 @@
 
 (fact
   (find-index-first-number-euler-25 12 3) => 12
-  (find-index-first-number-euler-25 24 3) => 12
-  (find-index-first-number-euler-25 4800 1000) => 4782)
+  (find-index-first-number-euler-25 24 3) => 12)
+
+(future-fact
+ (find-index-first-number-euler-25 4800 1000) => 4782)
 
 (println "--------- END OF PB 25 ----------" (java.util.Date.))

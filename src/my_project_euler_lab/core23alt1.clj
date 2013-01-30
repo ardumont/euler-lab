@@ -1,15 +1,14 @@
 (ns my-project-euler-lab.core23alt1
-  (:use [clojure.test               :only [run-tests]])
-  (:use [midje.sweet])
-  (:use [clojure.set :only [difference union]] )
-  (:use [my-project-euler-lab.primes :only [all-divisors-bi]]))
+  (:use [midje.sweet]
+        [clojure.set :only [difference union]]
+        [my-project-euler-lab.primes :only [all-divisors-bi]]))
 
 ;; A perfect number is a number for which the sum of its proper divisors
-;; is exactly equal to the number. 
+;; is exactly equal to the number.
 
 ;; For example, the sum of the proper divisors of 28 would be 1 + 2 + 4 + 7 + 14 = 28, which means that 28 is a perfect number.
 
-;; A number n is called deficient if the sum of its proper divisors is less than n 
+;; A number n is called deficient if the sum of its proper divisors is less than n
 ;; and it is called abundant if this sum exceeds n.
 
 ;; As 12 is the smallest abundant number, 1 + 2 + 3 + 4 + 6 = 16, the
@@ -18,7 +17,7 @@
 ;; integers greater than 28123 can be written as the sum of 2 abundant
 ;; numbers.
 
-;; However, this upper limit cannot be reduced any further by analysis even though it is known that the greatest number 
+;; However, this upper limit cannot be reduced any further by analysis even though it is known that the greatest number
 ;; that cannot be expressed as the sum of 2 abundant numbers is less than this limit.
 
 ;; Find the sum of all the positive integers which cannot be written as the sum of 2 abundant numbers.
@@ -88,8 +87,8 @@
   [m-abundants n]
   (let [half-n (Math/ceil (/ n 2))
         integers-s (range 1 (inc half-n))]
-    (some #(and (abundant-wm? m-abundants %)
-                (abundant-wm? m-abundants (- n %)))
+    (some #(and (abundants-wm? m-abundants %)
+                (abundants-wm? m-abundants (- n %)))
           integers-s)))
 
 (fact
@@ -174,4 +173,3 @@
              (sum-all-positive-integer-euler-23-nw 28123) => 4179871)
 
 (println "--------- END OF PB 23-1 ----------" (java.util.Date.))
-
