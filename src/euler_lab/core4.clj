@@ -12,15 +12,15 @@ numbers."
   (= (seq v) (reverse v)))
 
 (m/fact
-  (pal? [1 2 3])                   => falsey
-  (pal? [1 2 3 4])                 => falsey
-  (pal? [1 2 2 1])                 => truthy
-  (pal? ["1" "2" "2" "1"])         => truthy
-  (pal? ["1" "2" "2" "1" "2" "1"]) => falsey
-  (pal? ["1" "2" "2" "2" "2" "1"]) => truthy
-  (pal? [\1 \2 \2 \1])             => truthy
-  (pal? [\1 \2 \2 \2])             => falsey
-  (pal? [1 2 3 2 1])               => truthy)
+  (pal? [1 2 3])                   => m/falsey
+  (pal? [1 2 3 4])                 => m/falsey
+  (pal? [1 2 2 1])                 => m/truthy
+  (pal? ["1" "2" "2" "1"])         => m/truthy
+  (pal? ["1" "2" "2" "1" "2" "1"]) => m/falsey
+  (pal? ["1" "2" "2" "2" "2" "1"]) => m/truthy
+  (pal? [\1 \2 \2 \1])             => m/truthy
+  (pal? [\1 \2 \2 \2])             => m/falsey
+  (pal? [1 2 3 2 1])               => m/truthy)
 
 (defn gen-all-mult "Create the sequence of product from all the elements in the sequence 2x2. The product are filtered to not be above the limit."
   [seq0 limit]
