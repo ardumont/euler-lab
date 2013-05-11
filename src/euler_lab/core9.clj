@@ -1,19 +1,17 @@
  (ns euler-lab.core9
-  (:use [clojure.test               :only [run-tests]])
-  (:use [midje.sweet])
-  (:use [clojure.pprint             :only [pprint]]))
+   "Problem 9 - http://projecteuler.net/problem=9
+A Pythagorean triplet is a set of three natural numbers, a < b < c, for which,
+a^2 + b^2 = c^2
 
-;; A Pythagorean triplet is a set of three natural numbers, a < b < c, for which,
-;; a^2 + b^2 = c^2
+For example, 3^2 + 4^2 = 9 + 16 = 25 = 5^2.
 
-;; For example, 3^2 + 4^2 = 9 + 16 = 25 = 5^2.
+There exists exactly one Pythagorean triplet for which a + b + c = 1000.
+Find the product abc.
 
-;; There exists exactly one Pythagorean triplet for which a + b + c = 1000.
-;; Find the product abc.
-
-;; (1) a < b < c
-;; (2) a^2 + b^2 = c^2
-;; (3) a+b+c=1000 <=> a+b=1000-c
+1. a < b < c
+2. a^2 + b^2 = c^2
+3. a+b+c=1000 <=> a+b=1000-c"
+  (:require [midje.sweet :as m]))
 
 (defn is-triplet-ok? "Is the triplet is ok according to the hypothesis of the problem?"
   [a b c]
@@ -30,14 +28,10 @@
         (let [a (first nnat-sq0) b (first nnat-sq1) c (- 1000 a b)]
           (if (is-triplet-ok? a b c)
             [a b c]
-            (recur nnat-sq0 (rest nnat-sq1) (dec cnt))))
-        ))
-    )
-  )
+            (recur nnat-sq0 (rest nnat-sq1) (dec cnt))))))))
 
-(fact
-;  (find-triplet-ok-bf (range 0 (Math/sqrt 1000))) => [200 375 425]
-  (find-triplet-ok-bf (range 0 1000)) => [200 375 425]
-  )
+(m/fact
+;;  (find-triplet-ok-bf (range 0 (Math/sqrt 1000))) => [200 375 425]
+  (find-triplet-ok-bf (range 0 1000)) => [200 375 425])
 
-(fact (reduce * (find-triplet-ok-bf (range 0 1000))) => 31875000)
+(m/fact (reduce * (find-triplet-ok-bf (range 0 1000))) => 31875000)
