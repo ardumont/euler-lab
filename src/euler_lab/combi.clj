@@ -1,7 +1,5 @@
 (ns euler-lab.combi
-  (:use [clojure.test               :only [run-tests]])
-  (:use [midje.sweet])
-  (:use [clojure.pprint             :only [pprint]]))
+  (:require [midje.sweet :as m]))
 
 (defn factorial "Factorial method"
   [n]
@@ -9,9 +7,7 @@
     1
     (* n (factorial (dec n)))))
 
-;.;. Code you'd be proud to give your mom to show off on the fridge. --
-;.;. Mike Cohn
-(fact
+(m/fact
   (factorial 1) => 1
   (factorial 2) => 2
   (factorial 3) => 6
@@ -24,25 +20,22 @@
   [n k]
   (if (< n k)
     0
-    (/ (factorial n) (factorial (- n k))))
-  )
+    (/ (factorial n) (factorial (- n k)))))
 
-(fact
+(m/fact
   (arrangement 0 1) => 0
   (arrangement 0 0) => 1
   (arrangement 5 2) => 20
   (arrangement 5 0) => 1
-  (arrangement 5 5) => 120
-)
+  (arrangement 5 5) => 120)
 
 (defn combi "Number of combinations"
   [n k]
   (if (< n k)
     0
-    (/ (factorial n) (* (factorial k) (factorial (- n k)))))
-  )
+    (/ (factorial n) (* (factorial k) (factorial (- n k))))))
 
-(fact
+(m/fact
   (combi 0 1) => 0
   (combi 0 0) => 1
   (combi 5 2) => 10

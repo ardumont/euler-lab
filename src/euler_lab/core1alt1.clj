@@ -1,16 +1,10 @@
 (ns euler-lab.core1alt1
-  (:use [clojure.test               :only [run-tests]])
-  (:use [midje.sweet])
-  (:use [clojure.pprint             :only [pprint]]))
-
-                                        ; Problem 1
-
-;; If we list all the natural numbers below 10 that are multiples of 3
-;; or 5, we get 3, 5, 6 and 9.
-;; The sum of these multiples is 23.
-;; Find the sum of all the multiples of 3 or 5 below 1000.
-
-(unfinished )
+  "Problem 1 - http://projecteuler.net/problem=1
+If we list all the natural numbers below 10 that are multiples of 3
+or 5, we get 3, 5, 6 and 9.
+The sum of these multiples is 23.
+Find the sum of all the multiples of 3 or 5 below 1000."
+  (:use [midje.sweet]))
 
 (defn borne-max "Compute the last number max to be multiple of n"
   [n]
@@ -20,8 +14,8 @@
       (recur (dec curr)))))
 
 (fact "Compute the last number max to be multiple of n"
-  (borne-max 3) => 999
-  (borne-max 5) => 995
+  (borne-max 3)  => 999
+  (borne-max 5)  => 995
   (borne-max 15) => 990)
 
 (defn sum-1-borne "Compute the sum from 1 to n"
@@ -41,20 +35,18 @@
 (fact "Mock"
   (sum-multiple-of-n 3) => 166833
   (provided
-    (borne-max 3) => 999
-    (sum-1-borne 333) => 55611))
+    (borne-max 3)       => 999
+    (sum-1-borne 333)   => 55611))
 
-;.;. The biggest reward for a thing well done is to have done it. --
-;.;. Voltaire
 (fact "Mock2"
     (sum-multiple-of-n 5) => 99500
   (provided
-    (borne-max 5) => 995
-    (sum-1-borne 199) => 19900))
+    (borne-max 5)         => 995
+    (sum-1-borne 199)     => 19900))
 
 (fact "Real test on the sum of multiples"
-  (sum-multiple-of-n 3) => 166833
-  (sum-multiple-of-n 5) => 99500
+  (sum-multiple-of-n 3)  => 166833
+  (sum-multiple-of-n 5)  => 99500
   (sum-multiple-of-n 15) => 33165)
 
 ; (+ 1 2 ... 333) -> set of multiple of 3 ; (* 3 333) => 999
@@ -75,5 +67,3 @@
 
 (fact "real test"
   (sum-multiple-of-3-and-5) => 233168)
-
-(println "--------- END OF PB 1-1 ----------" (java.util.Date.))
