@@ -1,6 +1,12 @@
-# my-project-euler-lab
+# euler-lab
 
-A project to host my code to resolve the excellent problems from http://projecteuler.net/about.
+A project to fool around with the most excellent [euler project](http://projecteuler.net/about).
+
+# test
+
+```sh
+lein midje
+```
 
 ## Usage
 
