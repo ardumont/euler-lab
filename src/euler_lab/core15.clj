@@ -1,10 +1,9 @@
 (ns euler-lab.core15
-  (:use [midje.sweet]
-        [euler-lab.combi]))
-
-;; url: http://projecteuler.net/problem=15 (there are images)
-;; Starting in the top left corner of a 2×2 grid, there are 6 routes (without backtracking) to the bottom right corner.
-;; How many routes are there through a 20×20 grid?
+  "Problem 15 - http://projecteuler.net/problem=15
+Starting in the top left corner of a 2×2 grid, there are 6 routes (without backtracking) to the bottom right corner.
+How many routes are there through a 20×20 grid?"
+  (:require [midje.sweet     :as m]
+            [euler-lab.combi :as combi]))
 
 ;1x1
 ;a b => a b | a
@@ -75,17 +74,17 @@
 ;=> 12 + 3 + 3 + 2 = 20 = 2*P(2x2)+ 1/2*P(2x2)+1/2*P(2x2)+2 = 3*P(2x2)+2
 ; (2+1/2+1/2+1/3)P(2x2) = 10/3P(2x2)
 
-;(fact (intersection #{[1 2 3] [4 5 6]} #{[1 2 3]}) => #{[1 2 3]})
-;(fact (difference #{[1 2 3] [4 5 6]} #{[1 2 3]})) => #{[4 5 6]}
-;(fact (difference #{[1 2 3] [4 5 6]} #{[1 2 3] [4 5 6]})) => #{}
-;(fact (difference #{[1 2 3]} #{[1 2 3] [4 5 6]})) => #{}
-;(fact (union #{[1 2 3]} #{[1 2 3] [4 5 6]})) => #{[1 2 3] [4 5 6]}
+;(m/fact (intersection #{[1 2 3] [4 5 6]} #{[1 2 3]}) => #{[1 2 3]})
+;(m/fact (difference #{[1 2 3] [4 5 6]} #{[1 2 3]})) => #{[4 5 6]}
+;(m/fact (difference #{[1 2 3] [4 5 6]} #{[1 2 3] [4 5 6]})) => #{}
+;(m/fact (difference #{[1 2 3]} #{[1 2 3] [4 5 6]})) => #{}
+;(m/fact (union #{[1 2 3]} #{[1 2 3] [4 5 6]})) => #{[1 2 3] [4 5 6]}
 
-                                        ;.;. If this isn't nice, I don't know what is. -- Vonnegut
-(fact
-  (combi 2 1) => 2
-  (combi 4 2) => 6
-  (combi 6 3) => 20
-  (combi 8 4) => 70)
+(m/fact
+  (combi/combi 2 1) => 2
+  (combi/combi 4 2) => 6
+  (combi/combi 6 3) => 20
+  (combi/combi 8 4) => 70)
 
-(future-fact (combi 40 20) => 137846528820)
+(m/future-fact
+ (combi/combi 40 20) => 137846528820)
