@@ -1,5 +1,5 @@
-(defproject my-project-euler-lab "1.0.0-SNAPSHOT"
-  :description "Solve euler problems"
+(defproject euler-lab "1.0.0-SNAPSHOT"
+  :description "Solving euler problems."
   :dependencies [[org.clojure/clojure            "1.4.0"]
                  [clj-time                       "0.3.1"]
                  [clj-stacktrace                 "0.2.4"]
