@@ -1,13 +1,8 @@
 (ns euler-lab.core10
-  (:use [clojure.test               :only [run-tests]])
-  (:use [midje.sweet])
-  (:use [clojure.pprint             :only [pprint]]))
-
-                                        ; problem 10
-
-;; The sum of the primes below 10 is 2 + 3 + 5 + 7 = 17.
-
-;; Find the sum of all the primes below two million.
+  "Problem 10 - http://projecteuler.net/problem=10
+The sum of the primes below 10 is 2 + 3 + 5 + 7 = 17.
+Find the sum of all the primes below two million."
+  (:require [midje.sweet :as m]))
 
                                         ; brute force
 
@@ -44,12 +39,12 @@
         (recur (+ 2 candidate) (+ sum candidate) (conj primes candidate))
         (recur (+ 2 candidate) sum primes))))))
 
-(fact
+(m/fact
   (sum-prime-numbers 0) => 0
   (sum-prime-numbers 1) => 0
   (sum-prime-numbers 2) => 2
   (sum-prime-numbers 3) => 5
   (sum-prime-numbers 4) => 5
   (sum-prime-numbers 5) => 10
-  (sum-prime-numbers 7) => 17)
-;;(sum-prime-numbers 2000000) => 142913828922
+  (sum-prime-numbers 7) => 17
+  (sum-prime-numbers 2000000) => 142913828922)
