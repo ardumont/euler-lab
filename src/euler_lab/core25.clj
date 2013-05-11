@@ -1,29 +1,27 @@
 (ns euler-lab.core25
-  (:use [midje.sweet]
-        [euler-lab.utils :only [count-digits-from-number]]))
+  "Problem 25 - http://projecteuler.net/problem=25
+The Fibonacci sequence is defined by the recurrence relation:
+   Fn = Fn−1 + Fn−2, where F1 = 1 and F2 = 1.
 
-;; The Fibonacci sequence is defined by the recurrence relation:
-;;    Fn = Fn−1 + Fn−2, where F1 = 1 and F2 = 1.
+Hence the first 12 terms will be:
+   F1 = 1
+   F2 = 1
+   F3 = 2
+   F4 = 3
+   F5 = 5
+   F6 = 8
+   F7 = 13
+   F8 = 21
+   F9 = 34
+   F10 = 55
+   F11 = 89
+   F12 = 144
 
-;; Hence the first 12 terms will be:
-;;    F1 = 1
-;;    F2 = 1
-;;    F3 = 2
-;;    F4 = 3
-;;    F5 = 5
-;;    F6 = 8
-;;    F7 = 13
-;;    F8 = 21
-;;    F9 = 34
-;;    F10 = 55
-;;    F11 = 89
-;;    F12 = 144
-
-;; The 12th term, F12, is the first term to contain three digits.
-;; What is the first term in the Fibonacci sequence to contain 1000
-;; digits?
-
-(unfinished )
+The 12th term, F12, is the first term to contain three digits.
+What is the first term in the Fibonacci sequence to contain 1000
+digits?"
+  (:use [midje.sweet])
+  (:require [euler-lab.utils :as utils]))
 
 (defn fibo-lseq "Compute the sequence of fibonacci"
   []
@@ -39,7 +37,7 @@
 
 (defn find-first-number-euler-25 "Find the first number with nb-digits in the first nb-fib-num number of fibonacci number"
   [nb-fib-num nb-digits]
-  (first (drop-while (fn [n] (< (count-digits-from-number n) nb-digits)) (take nb-fib-num (fibo-lseq)))))
+  (first (drop-while (fn [n] (< (utils/count-digits-from-number n) nb-digits)) (take nb-fib-num (fibo-lseq)))))
 
 (fact
   (find-first-number-euler-25 12 3) => 144
@@ -48,7 +46,7 @@
 
 (defn find-index-first-number-euler-25 "Find the first number with nb-digits in the first nb-fib-num number of fibonacci number"
   [nb-fib-num nb-digits]
-  (inc (count (take-while (fn [n] (< (count-digits-from-number n) nb-digits)) (take nb-fib-num (fibo-lseq))))))
+  (inc (count (take-while (fn [n] (< (utils/count-digits-from-number n) nb-digits)) (take nb-fib-num (fibo-lseq))))))
 
 (fact
   (find-index-first-number-euler-25 12 3) => 12
@@ -56,5 +54,3 @@
 
 (future-fact
  (find-index-first-number-euler-25 4800 1000) => 4782)
-
-(println "--------- END OF PB 25 ----------" (java.util.Date.))

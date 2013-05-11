@@ -15,7 +15,7 @@ Find the sum of the digits in the number 100!
   [n]
   (if (< n 0)
     0
-    (reduce + (utils/num-digits-into-vec (combi/factorial n)))))
+    (reduce + (utils/num-digits-into-vec (combi/! n)))))
 
 (m/fact
   (count-digit-from-factorial -10) => 0

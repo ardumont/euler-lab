@@ -1,7 +1,7 @@
 (ns euler-lab.combi
   (:require [midje.sweet :as m]))
 
-(defn factorial "Factorial method"
+(defn ! "Factorial method"
   [n]
   (loop [a 1 c n]
     (if (= 0 c)
@@ -9,19 +9,19 @@
       (recur (* a c) (dec c)))))
 
 (m/fact
-  (factorial 1) => 1
-  (factorial 2) => 2
-  (factorial 3) => 6
-  (factorial 4) => 24
-  (factorial 5) => 120
-  (factorial 6) => 720
-  (factorial 7) => 5040)
+  (! 1) => 1
+  (! 2) => 2
+  (! 3) => 6
+  (! 4) => 24
+  (! 5) => 120
+  (! 6) => 720
+  (! 7) => 5040)
 
 (defn arrangement "Arrangement"
   [n k]
   (if (< n k)
     0
-    (/ (factorial n) (factorial (- n k)))))
+    (/ (! n) (! (- n k)))))
 
 (m/fact
   (arrangement 0 1) => 0
@@ -34,7 +34,7 @@
   [n k]
   (if (< n k)
     0
-    (/ (factorial n) (* (factorial k) (factorial (- n k))))))
+    (/ (! n) (* (! k) (! (- n k))))))
 
 (m/fact
   (combi 0 1) => 0

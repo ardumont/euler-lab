@@ -1,27 +1,27 @@
 (ns euler-lab.core21
-  (:use [midje.sweet]
-         [euler-lab.primes :only [all-divisors]]))
+  "Problem 21 - http://projecteuler.net/problem=21
+Let d(n) be defined as the sum of proper divisors of n (numbers less than n which divide evenly into n).
+If d(a) = b and d(b) = a, where a ≠ b, then a and b are an amicable pair and each of a and b are called amicable numbers.
 
-;; Let d(n) be defined as the sum of proper divisors of n (numbers less than n which divide evenly into n).
-;; If d(a) = b and d(b) = a, where a ≠ b, then a and b are an amicable pair and each of a and b are called amicable numbers.
+For example, the proper divisors of 220 are 1, 2, 4, 5, 10, 11, 20,
+22, 44, 55 and 110; therefore d(220) = 284.
+The proper divisors of 284 are 1, 2, 4, 71 and 142
+so d(284) = 220.
 
-;; For example, the proper divisors of 220 are 1, 2, 4, 5, 10, 11, 20,
-;; 22, 44, 55 and 110; therefore d(220) = 284.
-;; The proper divisors of 284 are 1, 2, 4, 71 and 142
-;; so d(284) = 220.
-
-;; Evaluate the sum of all the amicable numbers under 10000.
+Evaluate the sum of all the amicable numbers under 10000."
+  (:use  [midje.sweet])
+  (:require [euler-lab.primes :as primes]))
 
 (defn all-divisors-bl "Retrieve all the divisors except the last one (which is the numbers that starts all)"
   [num]
   (if (= 1 num)
     []
-    (butlast (all-divisors num))))
+    (butlast (primes/all-divisors num))))
 
 (fact
   (all-divisors-bl 10) => [1 2 5]
-  (all-divisors-bl 1) => []
-  (all-divisors-bl 2) => [1])
+  (all-divisors-bl 1)  => []
+  (all-divisors-bl 2)  => [1])
 
 (defn amicable? "Heart of the problem - determine if a number is amicable or not"
   [num]
@@ -75,7 +75,8 @@
 
 (fact "Check that the sum of amicable numbers for an interval is ok."
   (sum-amicable-numbers 10000) => 504
-  (provided (amicable-numbers-under 10000) => [220 284]))
+  (provided
+    (amicable-numbers-under 10000) => [220 284]))
 
 (future-fact
   (sum-amicable-numbers 10000) => 31626)

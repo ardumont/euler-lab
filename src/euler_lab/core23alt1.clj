@@ -1,7 +1,26 @@
 (ns euler-lab.core23alt1
-  (:use [midje.sweet]
-        [clojure.set :only [difference union]]
-        [euler-lab.primes :only [all-divisors-bi]]))
+    "Problem 23 - http://projecteuler.net/problem=23
+A perfect number is a number for which the sum of its proper divisors
+is exactly equal to the number.
+
+For example, the sum of the proper divisors of 28 would be 1 + 2 + 4 + 7 + 14 = 28, which means that 28 is a perfect number.
+
+A number n is called deficient if the sum of its proper divisors is less than n
+and it is called abundant if this sum exceeds n.
+
+As 12 is the smallest abundant number, 1 + 2 + 3 + 4 + 6 = 16, the
+smallest number that can be written as the sum of two abundant
+numbers is 24. By mathematical analysis, it can be shown that all
+integers greater than 28123 can be written as the sum of two abundant
+numbers.
+
+However, this upper limit cannot be reduced any further by analysis even though it is known that the greatest number
+that cannot be expressed as the sum of two abundant numbers is less than this limit.
+
+Find the sum of all the positive integers which cannot be written as the sum of two abundant numbers."
+  (:use [midje.sweet])
+  (:require [clojure.set :as set]
+            [euler-lab.primes :as primes]))
 
 ;; A perfect number is a number for which the sum of its proper divisors
 ;; is exactly equal to the number.
@@ -24,11 +43,9 @@
 
 (unfinished)
 
-(println "--------- PB 23-1 - naive way ----------" (java.util.Date.))
-
 (defn abundant? "Test if a number is abundant (sums of its divisors is strictly superior to itself)"
   [n]
-  (let [sum-all-divisors (reduce + (all-divisors-bi n))]
+  (let [sum-all-divisors (reduce + (primes/all-divisors-bi n))]
     (< n sum-all-divisors)))
 
 (fact
@@ -65,8 +82,6 @@
   => (just [32 36 38 40 42 44 48 50 24 30] :in-any-order)
   (sum-2-abundants-numbers 100)
   => (just [32 64 96 66 98 36 68 100 38 70 40 72 42 74 44 76 78 48 80 50 82 52 84 54 86 24 56 88 58 90 60 92 30 62 94] :in-any-order))
-
-(println "--------- PB 23-1 - algo with map ----------" (java.util.Date.))
 
 (defn map-abundants "Make a map of abundant numbers."
   [n]
@@ -136,7 +151,7 @@
 
 (defn init-sum-abundants "Function to init the set of the numbers that can be written as the sum of 2 abundant numbers - Use the map of abundant numbers."
   [m-abundants n]
-  (reduce union #{} (map #(double-til-limit % n) (keys m-abundants))))
+  (reduce set/union #{} (map #(double-til-limit % n) (keys m-abundants))))
 
 (fact
   (init-sum-abundants (map-abundants 100) 100) => #{96 66 36 100 70 40 72 42 78 48 80 84 54 24 56 88 90 60 30})
@@ -152,14 +167,14 @@
             acc
             (if (or (acc fst) (not (sum-2-abundants-wm? m-abundant fst)))
               (recur acc (rest s-integers))
-              (recur (union acc (double-til-limit fst n)) (rest s-integers)))))))))
+              (recur (set/union acc (double-til-limit fst n)) (rest s-integers)))))))))
 
 ;.;. The highest reward for a man's toil is not what he gets for it but
 ;.;. what he becomes by it. -- Ruskin
 (fact "sum-2-abundants-numbers - new way"
-  (sum-2-abundants-numbers-nw (map-abundants 50) 50) => (just #{32 36 38 40 42 44 48 50 24 30}, :in-any-order)
-  (sum-2-abundants-numbers-nw (map-abundants 100) 100) => (just #{24 30 32 36 38 40 42 44 48 50 52 54 56 58 60 62 64 66 68 70 72 74 76 78 80 82 84 86 88 90 92 94 96 98 100} :in-any-order)
-  (sum-2-abundants-numbers-nw (map-abundants 500) 500) => (just #{24 30 32 36 38 40 42 44 48 50 52 54 56 58 60 62 64 66 68 70 72 74 76 78 80 82 84 86 88 90 92 94 96 98 100 102 104 106 108 110 112 114 116 118 120 122 124 126 128 130 132 134 136 138 140 142 144 146 148 150 152 154 156 158 160 162 164 166 168 170 172 174 176 178 180 182 184 186 188 190 192 194 196 198 200 202 204 206 208 210 212 214 216 218 220 222 224 226 228 230 232 234 236 238 240 242 244 246 248 250 252 254 256 258 260 262 264 266 268 270 272 274 276 278 280 282 284 286 288 290 292 294 296 298 300 302 304 306 308 310 312 314 316 318 320 322 324 326 328 330 332 334 336 338 340 342 344 346 348 350 352 354 356 358 360 362 364 366 368 370 372 374 376 378 380 382 384 386 388 390 392 394 396 398 400 402 404 406 408 410 412 414 416 418 420 422 424 426 428 430 432 434 436 438 440 442 444 446 448 450 452 454 456 458 460 462 464 466 468 470 472 474 476 478 480 482 484 486 488 490 492 494 496 498 500} :in-any-order)
+  (sum-2-abundants-numbers-nw (map-abundants 50) 50)       => (just #{32 36 38 40 42 44 48 50 24 30}, :in-any-order)
+  (sum-2-abundants-numbers-nw (map-abundants 100) 100)     => (just #{24 30 32 36 38 40 42 44 48 50 52 54 56 58 60 62 64 66 68 70 72 74 76 78 80 82 84 86 88 90 92 94 96 98 100} :in-any-order)
+  (sum-2-abundants-numbers-nw (map-abundants 500) 500)     => (just #{24 30 32 36 38 40 42 44 48 50 52 54 56 58 60 62 64 66 68 70 72 74 76 78 80 82 84 86 88 90 92 94 96 98 100 102 104 106 108 110 112 114 116 118 120 122 124 126 128 130 132 134 136 138 140 142 144 146 148 150 152 154 156 158 160 162 164 166 168 170 172 174 176 178 180 182 184 186 188 190 192 194 196 198 200 202 204 206 208 210 212 214 216 218 220 222 224 226 228 230 232 234 236 238 240 242 244 246 248 250 252 254 256 258 260 262 264 266 268 270 272 274 276 278 280 282 284 286 288 290 292 294 296 298 300 302 304 306 308 310 312 314 316 318 320 322 324 326 328 330 332 334 336 338 340 342 344 346 348 350 352 354 356 358 360 362 364 366 368 370 372 374 376 378 380 382 384 386 388 390 392 394 396 398 400 402 404 406 408 410 412 414 416 418 420 422 424 426 428 430 432 434 436 438 440 442 444 446 448 450 452 454 456 458 460 462 464 466 468 470 472 474 476 478 480 482 484 486 488 490 492 494 496 498 500} :in-any-order)
     (sum-2-abundants-numbers-nw (map-abundants 1000) 1000) => (just #{24 30 32 36 38 40 42 44 48 50 52 54 56 58 60 62 64 66 68 70 72 74 76 78 80 82 84 86 88 90 92 94 96 98 100 102 104 106 108 110 112 114 116 118 120 122 124 126 128 130 132 134 136 138 140 142 144 146 148 150 152 154 156 158 160 162 164 166 168 170 172 174 176 178 180 182 184 186 188 190 192 194 196 198 200 202 204 206 208 210 212 214 216 218 220 222 224 226 228 230 232 234 236 238 240 242 244 246 248 250 252 254 256 258 260 262 264 266 268 270 272 274 276 278 280 282 284 286 288 290 292 294 296 298 300 302 304 306 308 310 312 314 316 318 320 322 324 326 328 330 332 334 336 338 340 342 344 346 348 350 352 354 356 358 360 362 364 366 368 370 372 374 376 378 380 382 384 386 388 390 392 394 396 398 400 402 404 406 408 410 412 414 416 418 420 422 424 426 428 430 432 434 436 438 440 442 444 446 448 450 452 454 456 458 460 462 464 466 468 470 472 474 476 478 480 482 484 486 488 490 492 494 496 498 500 502 504 506 508 510 512 514 516 518 520 522 524 526 528 530 532 534 536 538 540 542 544 546 548 550 552 554 556 558 560 562 564 566 568 570 572 574 576 578 580 582 584 586 588 590 592 594 596 598 600 602 604 606 608 610 612 614 616 618 620 622 624 626 628 630 632 634 636 638 640 642 644 646 648 650 652 654 656 658 660 662 664 666 668 670 672 674 676 678 680 682 684 686 688 690 692 694 696 698 700 702 704 706 708 710 712 714 716 718 720 722 724 726 728 730 732 734 736 738 740 742 744 746 748 750 752 754 756 758 760 762 764 766 768 770 772 774 776 778 780 782 784 786 788 790 792 794 796 798 800 802 804 806 808 810 812 814 816 818 820 822 824 826 828 830 832 834 836 838 840 842 844 846 848 850 852 854 856 858 860 862 864 866 868 870 872 874 876 878 880 882 884 886 888 890 892 894 896 898 900 902 904 906 908 910 912 914 916 918 920 922 924 926 928 930 932 934 936 938 940 942 944 946 948 950 952 954 956 957 958 960 962 963 964 965 966 968 969 970 972 974 975 976 978 980 981 982 984 985 986 987 988 990 992 993 994 996 998 999 945 1000} :in-any-order))
 
 (defn sum-all-positive-integer-euler-23-nw "Compute the sum of all positive integer which cannot be written as the sum of 2 abundants numbers in the interval 12 - n"
@@ -171,5 +186,3 @@
 
 (future-fact "Need to understand the difference of 945 someday"
              (sum-all-positive-integer-euler-23-nw 28123) => 4179871)
-
-(println "--------- END OF PB 23-1 ----------" (java.util.Date.))
