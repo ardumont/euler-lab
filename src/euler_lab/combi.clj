@@ -3,9 +3,10 @@
 
 (defn factorial "Factorial method"
   [n]
-  (if (zero? n)
-    1
-    (* n (factorial (dec n)))))
+  (loop [a 1 c n]
+    (if (= 0 c)
+      a
+      (recur (* a c) (dec c)))))
 
 (m/fact
   (factorial 1) => 1

@@ -1,18 +1,16 @@
 (ns euler-lab.core17
-  (:use [clojure.test               :only [run-tests]])
-  (:use [midje.sweet])
-  (:use [clojure.pprint             :only [pprint]])
-  (:use [euler-lab.utils :only [num-digits-into-vec]]))
+  "Problem 17 - http://projecteuler.net/problem=17
+If the numbers 1 to 5 are written out in words: one, two, three,
+four, five, then there are 3 + 3 + 5 + 4 + 4 = 19 letters used in total.
+If all the numbers from 1 to 1000 (one thousand) inclusive were written
+ out in words, how many letters would be used?
 
-;; If the numbers 1 to 5 are written out in words: one, two, three,
-;; four, five, then there are 3 + 3 + 5 + 4 + 4 = 19 letters used in total.
-;; If all the numbers from 1 to 1000 (one thousand) inclusive were written
- ;; out in words, how many letters would be used?
-
-;; NOTE: Do not count spaces or hyphens. For example, 342 (three hundred
-;; and forty-two) contains 23 letters and 115 (one hundred and fifteen)
-;; contains 20 letters. The use of "and" when writing out numbers is in
-;; compliance with British usage.
+NOTE: Do not count spaces or hyphens. For example, 342 (three hundred
+and forty-two) contains 23 letters and 115 (one hundred and fifteen)
+contains 20 letters. The use of and when writing out numbers is in
+compliance with British usage."
+  (:require [midje.sweet :as m]
+            [euler-lab.utils :as utils]))
 
 ;one        two           three    four     five    six     seven     eight    nine     ten
 ; 3          3             5        4        4       3       5        5        4        3 => 39
@@ -90,8 +88,8 @@
                :else "nine")
         "one"))))
 
-(tabular
- (fact (substitute-word ?in ?range) => ?out)
+(m/tabular
+ (m/fact (substitute-word ?in ?range) => ?out)
  ?in ?range ?out
  1 1 "one"
  2 1 "two"
@@ -159,7 +157,7 @@
                  (recur (rest vec-num) (conj acc (substitute-word fst 3) "hundred" "and")))
                (if (= 4 count-vec) ["one" "thousand"])))))))))
 
-(fact
+(m/fact
   (to-eng [3]) => ["three"]
   (to-eng [1 0]) => ["ten"]
   (to-eng [1 1]) => ["eleven"]
@@ -189,7 +187,7 @@
     (do (println to-eng-vec)
         (reduce + (map count to-eng-vec)))))
 
-(fact
+(m/fact
   (to-eng-count [3]) => 5  (to-eng-count [8]) => 5
   (to-eng-count [9]) => 4
   (to-eng-count [1 0]) => 3
@@ -220,7 +218,7 @@
 
 (defn substitute-words "Count all numbers in letters"
   [start end]
-  (reduce + (map to-eng-count (map num-digits-into-vec (range start (inc end))))))
+  (reduce + (map to-eng-count (map utils/num-digits-into-vec (range start (inc end))))))
 
 ;.;. [one]
 ;.;. [two]
@@ -1222,6 +1220,5 @@
 ;.;. [nine hundred and ninety eight]
 ;.;. [nine hundred and ninety nine]
 ;.;. [one thousand]
-(fact
-  (substitute-words 1 1000) => 21124
-  )
+(m/fact
+  (substitute-words 1 1000) => 21124)

@@ -29,9 +29,9 @@ numbers."
 
 (m/fact
   (gen-all-mult (range 1 11) 100)
-  => (contains [10 20 30 40 50 60 70 80 90 100 9 18 27 36 45 54 63 72 81 8 16 24 32 48 56 64 7 14 21 28 35 42 49 6 12 5 15 25 4 3 2 1] :in-any-order :gaps-ok)
+  => (m/contains [10 20 30 40 50 60 70 80 90 100 9 18 27 36 45 54 63 72 81 8 16 24 32 48 56 64 7 14 21 28 35 42 49 6 12 5 15 25 4 3 2 1] :in-any-order :gaps-ok)
     (gen-all-mult (range 1 11) 10)
-  => (contains [10 9 8 7 6 5 4 3 2 1] :in-any-order :gaps-ok))
+  => (m/contains [10 9 8 7 6 5 4 3 2 1] :in-any-order :gaps-ok))
 
 (defn max-pal-6 "Find the largest palindrome"
   []
