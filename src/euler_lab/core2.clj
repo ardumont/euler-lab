@@ -9,14 +9,15 @@ not exceed four million, find the sum of the even-valued terms."
   (:require [midje.sweet :as m]))
 
 (defn fibonacci-seq "Lazy-seq fibonacci"
-  []
+  [s0 s1]
   ((fn fib-seq [a b]
-     (lazy-seq (cons a (fib-seq b (+ a b))))) 1 2))
+     (lazy-seq (cons a (fib-seq b (+ a b))))) s0 s1))
 
 (m/fact
-  (take 1 (fibonacci-seq)) => [1]
-  (take 2 (fibonacci-seq)) => [1 2]
-  (take 3 (fibonacci-seq)) => [1 2 3]
-  (take 4 (fibonacci-seq)) => [1 2 3 5]
-  (take 11 (fibonacci-seq)) => [1 2 3 5 8 13 21 34 55 89 144]
-  (reduce + (filter #(zero? (rem % 2)) (take 33 (fibonacci-seq)))) => 4613732)
+  (take 1 (fibonacci-seq 1 2))                                         => [1]
+  (take 2 (fibonacci-seq 1 2))                                         => [1 2]
+  (take 3 (fibonacci-seq 1 2))                                         => [1 2 3]
+  (take 4 (fibonacci-seq 1 2))                                         => [1 2 3 5]
+  (take 11 (fibonacci-seq 1 2))                                        => [1 2 3 5 8 13 21 34 55 89 144]
+  (take 11 (fibonacci-seq 1 1))                                        => [1 1 2 3 5 8 13 21 34 55 89]
+  (reduce + (filter #(zero? (rem % 2)) (take 33 (fibonacci-seq 1 2)))) => 4613732)
