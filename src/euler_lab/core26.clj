@@ -55,16 +55,6 @@ Find the value of d < 1000 for which 1/d contains the longest recurring cycle in
        (take 20)
        (map :q)) => [0 0 7 6 9 2 3 0 7 6 9 2 3 0 7 6 9 2 3 0])
 
-(defn recurring-cycle
-  "Compute the size of a recurring cycle in a sequence."
-  [s]
-  (loop [v s, m {}, i 0]
-    (let [[h & t] v
-          p       (m h)]
-      (if p
-        (- i p)
-        (recur t (assoc m h i) (+ 1 i))))))
-
 (defn recurring-cycle-count
   "Compute the size of a recurring cycle in a sequence."
   [s]
@@ -87,7 +77,9 @@ Find the value of d < 1000 for which 1/d contains the longest recurring cycle in
   (recurring-cycle-count [0 1 2 5 2 5 2 5])                                             => 2)
 
 (def recurring-cycle ^{:doc "Compute the recurring cycle from a division by 1"}
-  (comp recurring-cycle-count (partial map :n) (partial division 1)))
+  (comp recurring-cycle-count
+        (partial map :n)
+        (partial division 1)))
 
 (m/tabular
  (m/fact
@@ -103,3 +95,16 @@ Find the value of d < 1000 for which 1/d contains the longest recurring cycle in
     9  1
     10 1
     13 6)
+
+(m/fact :finding-the-max-recurring-cycle-inside-1-999-interval
+  (->> (range 1 1000)
+       (map recurring-cycle)
+       (apply max)
+       inc) => 983)
+
+;; euler-lab.core26> (time (->> (range 1 1000)
+;;                              (map recurring-cycle)
+;;                              (apply max)
+;;                              inc))
+;; "Elapsed time: 127.38983 msecs"
+;; 983
