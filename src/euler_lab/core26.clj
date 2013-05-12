@@ -26,17 +26,17 @@ Find the value of d < 1000 for which 1/d contains the longest recurring cycle in
   (tw even? [1 2 3 4])              => [1])
 
 (defn division
-  "Compute the division the elementary school way :D"
-  [num den]
-  (->> {:c? true :n num :q 0}
-        (iterate
-         (fn [{:keys [n]}]
-           (let [r (rem n den)
-                 qu (quot n den)]
-             (cond (or (= 0 r) (= r den)) {:c? false :n 0        :q qu}
-                   (< r den)              {:c? true  :n (* 10 r) :q qu}
-                   :else                  {:c? true  :n r        :q qu}))))
-        (drop 1)))
+  "Compute the division the elementary school way :D (D is denominator, N numerator, R remains, Q quotient)."
+  [N D]
+  (->> {:c? true :n N}
+       (iterate
+        (fn [{:keys [n]}]
+          (let [R (rem n D)
+                Q (quot n D)]
+            (cond (or (= 0 R) (= R D)) {:c? false :n 0        :q Q}
+                  (< R D)              {:c? true  :n (* 10 R) :q Q}
+                  :else                {:c? true  :n R        :q Q}))))
+       (drop 1)))
 
 (m/fact :now-we-have-a-way-to-divide-infinitely
   (->> (division 1 8)
@@ -47,7 +47,59 @@ Find the value of d < 1000 for which 1/d contains the longest recurring cycle in
        (map :q)) => [0 0 5]
   (->> (division 1 7)
        (take 20)
-       (map :q)) => [0 1 4 2 8 5 7 1 4 2 8 5 7 1 4 2 8 5 7 1])
+       (map :q)) => [0 1 4 2 8 5 7 1 4 2 8 5 7 1 4 2 8 5 7 1]
+  (->> (division 1 7)
+       (take 20)
+       (map :n)) => [10 30 20 60 40 50 10 30 20 60 40 50 10 30 20 60 40 50 10 30]
+  (->> (division 1 13)
+       (take 20)
+       (map :q)) => [0 0 7 6 9 2 3 0 7 6 9 2 3 0 7 6 9 2 3 0])
 
-(comment
-)
+(defn recurring-cycle
+  "Compute the size of a recurring cycle in a sequence."
+  [s]
+  (loop [v s, m {}, i 0]
+    (let [[h & t] v
+          p       (m h)]
+      (if p
+        (- i p)
+        (recur t (assoc m h i) (+ 1 i))))))
+
+(defn recurring-cycle-count
+  "Compute the size of a recurring cycle in a sequence."
+  [s]
+  (->> {:v s :m {} :i 0}
+       (iterate
+        (fn [{:keys [v m i] :as cp}]
+          (let [[h & t] v
+                p       (m h)]
+            (if p
+              (assoc cp :r (- i p))
+              {:v t :m (assoc m h i) :i (+ 1 i)}))))
+       (drop-while #(nil? (:r %)))
+       first
+       :r))
+
+(m/fact
+  (recurring-cycle-count [10 30 20 60 40 50 10 30 20 60 40 50 10 30 20 60 40 50 10 30]) => 6
+  (recurring-cycle-count [0 1 4 2 8 5 7 1 4 2 8 5 7 1 4 2 8 5 7 1])                     => 6
+  (recurring-cycle-count [0 1 2 3 4 1 2 3 4])                                           => 4
+  (recurring-cycle-count [0 1 2 5 2 5 2 5])                                             => 2)
+
+(def recurring-cycle ^{:doc "Compute the recurring cycle from a division by 1"}
+  (comp recurring-cycle-count (partial map :n) (partial division 1)))
+
+(m/tabular
+ (m/fact
+   (recurring-cycle ?n) => ?r)
+    ?n ?r
+    2  1
+    3  1
+    4  1
+    5  1
+    6  1
+    7  6
+    8  1
+    9  1
+    10 1
+    13 6)
