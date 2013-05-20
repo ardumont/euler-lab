@@ -53,7 +53,10 @@ Find the value of d < 1000 for which 1/d contains the longest recurring cycle in
        (map :n)) => [10 30 20 60 40 50 10 30 20 60 40 50 10 30 20 60 40 50 10 30]
   (->> (division 1 13)
        (take 20)
-       (map :q)) => [0 0 7 6 9 2 3 0 7 6 9 2 3 0 7 6 9 2 3 0])
+       (map :q)) => [0 0 7 6 9 2 3 0 7 6 9 2 3 0 7 6 9 2 3 0]
+  (->> (division 1 13)
+       (take 20)
+       (map :n)) => [10 100 90 120 30 40 10 100 90 120 30 40 10 100 90 120 30 40 10 100])
 
 (defn recurring-cycle-count
   "Compute the size of a recurring cycle in a sequence."
@@ -96,15 +99,16 @@ Find the value of d < 1000 for which 1/d contains the longest recurring cycle in
     10 1
     13 6)
 
-(m/fact :finding-the-max-recurring-cycle-inside-1-999-interval
-  (->> (range 1 1000)
-       (map recurring-cycle)
-       (apply max)
-       inc) => 983)
+(defn max-recurring-cycle
+  "Given a limit l, return the couple [longest-recurring-cycle number] from 1 to (l-1), which corresponds to the number for which 1/number has the longest recurring cycle."
+  [l]
+  (->> (range 1 l)
+       (reduce (fn [m n] (assoc m (recurring-cycle n) n)) (sorted-map))
+       last))
 
-;; euler-lab.core26> (time (->> (range 1 1000)
-;;                              (map recurring-cycle)
-;;                              (apply max)
-;;                              inc))
-;; "Elapsed time: 127.38983 msecs"
-;; 983
+(m/fact
+  (max-recurring-cycle 1000) => [982 983])
+
+;; euler-lab.core26> (time (max-recurring-cycle 1000))
+;; "Elapsed time: 237.337448 msecs"
+;; [982 983]
