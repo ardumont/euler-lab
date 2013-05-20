@@ -103,7 +103,8 @@ Find the value of d < 1000 for which 1/d contains the longest recurring cycle in
   "Given a limit l, return the couple [longest-recurring-cycle number] from 1 to (l-1), which corresponds to the number for which 1/number has the longest recurring cycle."
   [l]
   (->> (range 1 l)
-       (reduce (fn [m n] (assoc m (recurring-cycle n) n)) (sorted-map))
+       (map (juxt recurring-cycle identity))
+       (into (sorted-map))
        last))
 
 (m/fact
